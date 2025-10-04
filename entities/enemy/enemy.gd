@@ -6,7 +6,7 @@ signal attacked_tower(attack_strength:float)
 @onready var attack_timer:Timer = $AttackTimer
 var tower_positiom: Vector2 = Vector2(472, 281) # Hardcoded tower position
 var speed: float = 30.0
-var target_distance:float = 50.0
+var target_distance:float = 30.0
 var is_moving: bool = true
 var is_attacking: bool = false
 

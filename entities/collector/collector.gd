@@ -5,7 +5,12 @@ const ACCELERATION := 10.0
 const DECELERATION := 5.0
 
 func _ready() -> void:
+	reset()
+
+
+func reset() -> void:
 	position = get_viewport().get_mouse_position()
+
 
 func _physics_process(delta: float) -> void:
 	var direction = get_viewport().get_mouse_position() - position

@@ -10,14 +10,20 @@ const ENEMY = preload("uid://dl3c43g803ldy")
 var enemy_spawns := 5
 
 func _ready() -> void:
+	spawn_wave()
+
+
+func spawn_wave() -> void:
 	for i in range(enemy_spawns):
 		spawn_enemy(ENEMY, get_random_position())
+
 
 func spawn_enemy(enemy_scene: PackedScene, pos: Vector2) -> void:
 	var instance = enemy_scene.instantiate()
 	instance.position = pos;
 	tower.connect_to_enemy(instance)
 	enemies.add_child(instance)
+
 
 func get_random_position() -> Vector2:
 	return spawn_path.curve.sample_baked(randf() * spawn_length)
