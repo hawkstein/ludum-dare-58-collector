@@ -1,25 +1,10 @@
-# godot-2d-template
+# Ludum Dare 58
+## Theme: Collector
 
-This is a template for quickly starting a Godot 2D project in a game jam.
-Replace this README with a description of the jam it's being used for and the game.
+Time looping wizard must choose what mana to collect to defend their tower.
 
-It assumes that you'll be working with 2D pixel art:
-- Scale Mode is set to integer
-- Handles resizing
-- Default resolution is 425 x 240
+### Gameplay
 
-## Features
-- HTML5 export
-- ScreenChanger. Add scenes in the IDE to the autoload scene with a key and then use `ScreenChanger.change_to(key)`
-
-## Planned features
-
-- Itch.io upload script
-- AudioManager
-- GlobalSignals
-- Default UI Theme
-- Main Menu Scene
-- Options Scene
-- Game Scene
-	- HUD
-	- Pause 
+A tower defence game with a singular tower and a wizard with a spell collection as the upgrades.
+Every time it is destroyed the game starts again but you keep the spells you have unlocked and upgraded each loop.
+Player discovers new spells, defeats more waves each time and experiments with builds.
