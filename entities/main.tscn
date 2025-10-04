@@ -1,0 +1,83 @@
+[gd_scene load_steps=9 format=3 uid="uid://vck4bl5wwflb"]
+
+[ext_resource type="Script" uid="uid://omkrdyrq3u73" path="res://entities/main.gd" id="1_h2yge"]
+[ext_resource type="Texture2D" uid="uid://0nirocpy58ay" path="res://entities/background/game-background.png" id="4_1v22p"]
+[ext_resource type="PackedScene" uid="uid://dpu03gqasp6pe" path="res://entities/tower/tower.tscn" id="5_2runn"]
+[ext_resource type="Theme" uid="uid://bes7poiouimn8" path="res://utils/ui/default_theme.tres" id="5_lquwl"]
+[ext_resource type="Script" uid="uid://bpfk6cgrwismq" path="res://entities/wave_spawner.gd" id="6_2v7j7"]
+[ext_resource type="PackedScene" uid="uid://dljnepvvb7jvm" path="res://utils/ui/title_window.tscn" id="6_7mycd"]
+[ext_resource type="PackedScene" uid="uid://s7dq2bkumtuv" path="res://entities/collector/collector.tscn" id="7_msjn6"]
+
+[sub_resource type="Curve2D" id="Curve2D_2runn"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -1, -11, 0, 0, 0, 0, 269, -13, 0, 0, 0, 0, 966, -11, 0, 0, 0, 0, 970, 544, 0, 0, 0, 0, 470, 546, 0, 0, 0, 0, -3, 550, 0, 0, 0, 0, -9, 223, 0, 0, 0, 0, -1, -11)
+}
+point_count = 8
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_h2yge")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Layout" type="Control" parent="HUD"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_lquwl")
+
+[node name="ScoreMargin" type="MarginContainer" parent="HUD/Layout"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ScoreLabel" type="Label" parent="HUD/Layout/ScoreMargin"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.92941177, 0.9490196, 0.8862745, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.99607843)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/shadow_outline_size = 4
+text = "Score: 9999"
+
+[node name="PauseWindow" parent="." instance=ExtResource("6_7mycd")]
+unique_name_in_owner = true
+visible = false
+offset_left = 300.0
+offset_top = 64.0
+offset_right = 700.0
+offset_bottom = 464.0
+title = "Options (Paused)"
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="BackgroundSprite" type="Sprite2D" parent="Background"]
+texture = ExtResource("4_1v22p")
+centered = false
+
+[node name="Tower" parent="." instance=ExtResource("5_2runn")]
+position = Vector2(472, 281)
+
+[node name="WaveSpawner" type="Node2D" parent="."]
+script = ExtResource("6_2v7j7")
+
+[node name="SpawnPath" type="Path2D" parent="WaveSpawner"]
+unique_name_in_owner = true
+curve = SubResource("Curve2D_2runn")
+
+[node name="Enemies" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Collector" parent="." instance=ExtResource("7_msjn6")]

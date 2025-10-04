@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://s7dq2bkumtuv"]
+
+[ext_resource type="Script" uid="uid://bj4kcjkicde37" path="res://entities/collector/collector.gd" id="1_yeha8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2v7j7"]
+radius = 29.5
+
+[node name="Collector" type="CharacterBody2D"]
+script = ExtResource("1_yeha8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_2v7j7")
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(11, -27, 22, -20, 27, -11, 30, 3, 27, 13, 17, 24, 6, 30, -13, 29, -24, 19, -29, 7, -30, -5, -25, -19, -11, -28, 1, -29, 12, -26)
+width = 2.0
+default_color = Color(0.13333334, 0.16470589, 0.23921569, 1)

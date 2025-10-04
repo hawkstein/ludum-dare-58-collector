@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://bk4j1idfh85sp"
-path="res://.godot/imported/Silver.ttf-821872bb71e3788f5a26fb5a32e04f06.fontdata"
+uid="uid://bobven7q0bksd"
+path="res://.godot/imported/antiquity-print.ttf-929e51cd2ba6ff1c92486a6cad582189.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/Silver.ttf"
-dest_files=["res://.godot/imported/Silver.ttf-821872bb71e3788f5a26fb5a32e04f06.fontdata"]
+source_file="res://assets/fonts/antiquity-print.ttf"
+dest_files=["res://.godot/imported/antiquity-print.ttf-929e51cd2ba6ff1c92486a6cad582189.fontdata"]
 
 [params]
 
