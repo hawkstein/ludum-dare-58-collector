@@ -79,5 +79,6 @@ curve = SubResource("Curve2D_2runn")
 
 [node name="Enemies" type="Node2D" parent="."]
 unique_name_in_owner = true
+y_sort_enabled = true
 
 [node name="Collector" parent="." instance=ExtResource("7_msjn6")]
