@@ -5,12 +5,16 @@ const MANA = preload("uid://vrd8l0abflp6")
 
 @onready var pause_window: Control = %PauseWindow
 @onready var ui: CanvasLayer = $UI
+@onready var hud: CanvasLayer = $HUD
 @onready var tower: Tower = %Tower
 @onready var enemies: Node2D = %Enemies
 @onready var wave_spawner: Node2D = %WaveSpawner
 @onready var collector: CharacterBody2D = $Collector
 @onready var spells: Node2D = $Spells
 @onready var mana: Node2D = $Mana
+@onready var mana_count: Label = %ManaCount
+
+var fire_mana: int = 0;
 
 func _ready() -> void:
 	ui.hide()
@@ -28,6 +32,7 @@ func _ready() -> void:
 
 func _on_tower_tower_destroyed() -> void:
 	ui.show()
+	hud.hide()
 	for child in enemies.get_children():
 		child.queue_free()
 	for child in mana.get_children():
@@ -39,10 +44,14 @@ func _on_tower_tower_destroyed() -> void:
 
 func reset() -> void:
 	ui.hide()
+	hud.show()
 	get_tree().paused = false
 	tower.reset()
 	wave_spawner.spawn_wave()
 	collector.reset()
+	
+	fire_mana = 0
+	_update_mana_count()
 
 
 func _on_reset_button_pressed() -> void:
@@ -69,7 +78,6 @@ func _fire_at_moving_target(target:Enemy) -> void:
 	tween.tween_property(fireball_spell, "global_position", predicted_position, flight_time)
 	tween.tween_callback(_damage_target.bind(target))
 	tween.tween_callback(fireball_spell.queue_free)
-	tween.tween_callback(_spawn_mana.bind(predicted_position))
 
 
 func _pick_nearest_target() -> Enemy:
@@ -87,7 +95,10 @@ func _pick_nearest_target() -> Enemy:
 
 
 func _damage_target(target:Enemy) -> void:
-	target.queue_free()
+	target.take_damage(50)
+	if target.health <= 0:
+		_spawn_mana(target.global_position)
+		target.queue_free()
 
 
 func _spawn_mana(mana_position:Vector2) -> void:
@@ -118,3 +129,10 @@ func _pickup_mana(mana_drop:Mana) -> void:
 	var duration = (mana_drop.global_position - cast_position).length() / 400
 	tween.tween_property(mana_drop, "global_position", cast_position, duration)
 	tween.tween_callback(mana_drop.queue_free)
+	
+	fire_mana +=1
+	_update_mana_count()
+
+
+func _update_mana_count() -> void:
+	mana_count.text = "Mana: {0} {1} {2} {3}".format([str(fire_mana) ,"x", "x", "x"])

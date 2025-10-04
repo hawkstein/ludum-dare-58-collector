@@ -4,11 +4,20 @@ extends Node2D
 signal attacked_tower(attack_strength:float)
 
 @onready var attack_timer:Timer = $AttackTimer
+@onready var health_color_rect: ColorRect = $HealthColorRect
+
+
 var tower_position: Vector2 = Vector2(472, 281) # Hardcoded tower position
 var speed: float = 30.0
 var target_distance:float = 30.0
 var is_moving: bool = true
 var is_attacking: bool = false
+var max_health:float = 100.0
+var health:float = 100.0:
+	set(p_health):
+		health = p_health
+		var health_scale = health / max_health
+		health_color_rect.scale.x = health_scale
 
 
 func _process(delta) -> void:
@@ -37,3 +46,8 @@ func predicted_global_position(time:float) -> Vector2:
 	var direction = (tower_position - global_position).normalized()
 	var velocity = direction * speed * time
 	return global_position + velocity
+
+
+func take_damage(amount:float) -> void:
+	assert(amount >= 0)
+	health = max(0, health - amount)
