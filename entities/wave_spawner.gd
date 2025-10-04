@@ -5,6 +5,7 @@ const ENEMY = preload("uid://dl3c43g803ldy")
 @onready var spawn_path: Path2D = %SpawnPath
 @onready var spawn_length = spawn_path.curve.get_baked_length()
 @onready var enemies: Node2D = %Enemies
+@onready var tower: Node2D = %Tower
 
 var enemy_spawns := 5
 
@@ -15,6 +16,7 @@ func _ready() -> void:
 func spawn_enemy(enemy_scene: PackedScene, pos: Vector2) -> void:
 	var instance = enemy_scene.instantiate()
 	instance.position = pos;
+	tower.connect_to_enemy(instance)
 	enemies.add_child(instance)
 
 func get_random_position() -> Vector2:

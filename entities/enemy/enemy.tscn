@@ -8,3 +8,6 @@ script = ExtResource("1_im2q6")
 
 [node name="Enemy" type="Sprite2D" parent="."]
 texture = ExtResource("1_ksmh7")
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 3.0

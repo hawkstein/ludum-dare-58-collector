@@ -1,12 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://dpu03gqasp6pe"]
+[gd_scene load_steps=5 format=3 uid="uid://dpu03gqasp6pe"]
 
 [ext_resource type="Texture2D" uid="uid://cvxnnn1eo6nom" path="res://entities/tower/tower.png" id="1_e2b0r"]
+[ext_resource type="Script" uid="uid://dtbt7a7xvk8ak" path="res://entities/tower/tower.gd" id="1_ru2d0"]
 [ext_resource type="Script" uid="uid://lvdcabvqr55i" path="res://entities/tower/health_bar.gd" id="2_uvpmh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2runn"]
 radius = 31.016125
 
 [node name="Tower" type="Area2D"]
+script = ExtResource("1_ru2d0")
 
 [node name="TowerSprite" type="Sprite2D" parent="."]
 position = Vector2(-1, -74)
