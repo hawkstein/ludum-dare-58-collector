@@ -19,6 +19,7 @@ script = ExtResource("1_h2yge")
 
 [node name="UI" type="CanvasLayer" parent="."]
 process_mode = 2
+visible = false
 
 [node name="Layout" type="Control" parent="UI"]
 layout_mode = 3
@@ -118,6 +119,9 @@ script = ExtResource("6_2v7j7")
 unique_name_in_owner = true
 curve = SubResource("Curve2D_2runn")
 
+[node name="SpawnTimer" type="Timer" parent="WaveSpawner"]
+wait_time = 10.0
+
 [node name="Enemies" type="Node2D" parent="."]
 unique_name_in_owner = true
 y_sort_enabled = true
@@ -126,7 +130,13 @@ y_sort_enabled = true
 unique_name_in_owner = true
 position = Vector2(472, 281)
 
+[node name="Spells" type="Node2D" parent="."]
+
+[node name="Mana" type="Node2D" parent="."]
+
 [node name="Collector" parent="." instance=ExtResource("7_msjn6")]
 
 [connection signal="pressed" from="UI/Layout/MarginContainer/VBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
+[connection signal="timeout" from="WaveSpawner/SpawnTimer" to="WaveSpawner" method="_on_spawn_timer_timeout"]
+[connection signal="cast_spell" from="Tower" to="." method="_on_tower_cast_spell"]
 [connection signal="tower_destroyed" from="Tower" to="." method="_on_tower_tower_destroyed"]

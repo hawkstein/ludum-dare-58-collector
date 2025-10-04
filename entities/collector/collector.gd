@@ -17,9 +17,9 @@ func _physics_process(delta: float) -> void:
 	if direction.length() > 20:
 		direction = direction.normalized()
 		velocity = lerp(velocity, direction * MAX_SPEED, delta * ACCELERATION)
-	elif direction.length() > 0.2:
+	elif direction.length() > 5:
 		direction = direction.normalized()
-		velocity = lerp(velocity, direction * MAX_SPEED, delta * DECELERATION)
+		velocity = direction * MAX_SPEED * delta * DECELERATION
 	else:
 		velocity = Vector2.ZERO
 	
