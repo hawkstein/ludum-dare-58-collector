@@ -1,0 +1,52 @@
+[gd_scene load_steps=3 format=3 uid="uid://dljnepvvb7jvm"]
+
+[ext_resource type="Theme" uid="uid://bes7poiouimn8" path="res://utils/ui/default_theme.tres" id="1_606pq"]
+[ext_resource type="Script" uid="uid://c0ddnb5af46gc" path="res://utils/ui/title_window.gd" id="2_5ogai"]
+
+[node name="TitleWindow" type="Control"]
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme = ExtResource("1_606pq")
+script = ExtResource("2_5ogai")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="PanelContainer" parent="VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Margin" type="MarginContainer" parent="VBox/Background"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="VBox/Background/Margin"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBox/Background/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Title"
+
+[node name="Content" type="Control" parent="VBox/Background/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CloseButton" type="Button" parent="VBox/Background/Margin/VBox"]
+layout_mode = 2
+text = "Close"
+
+[connection signal="pressed" from="VBox/Background/Margin/VBox/CloseButton" to="." method="_on_close_button_pressed"]

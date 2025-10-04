@@ -1,0 +1,46 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://bes7poiouimn8"]
+
+[ext_resource type="FontFile" uid="uid://bk4j1idfh85sp" path="res://assets/fonts/Silver.ttf" id="1_os6be"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ht4lr"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_os6be"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dfpka"]
+bg_color = Color(0.40060982, 0.634433, 0.7596595, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fn0w4"]
+bg_color = Color(0.94486785, 0.24325544, 0.85611224, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_ht4lr"]
+thickness = 8
+
+[resource]
+default_font = ExtResource("1_os6be")
+default_font_size = 38
+Button/colors/font_hover_color = Color(0, 0, 0, 1)
+Button/styles/hover = SubResource("StyleBoxFlat_ht4lr")
+Button/styles/normal = SubResource("StyleBoxFlat_os6be")
+Button/styles/pressed = SubResource("StyleBoxFlat_os6be")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_dfpka")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_fn0w4")
+HSlider/styles/slider = SubResource("StyleBoxLine_ht4lr")
