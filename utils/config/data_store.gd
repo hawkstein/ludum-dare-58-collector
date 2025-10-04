@@ -8,6 +8,7 @@ var data:Dictionary[StringName, DataModel] = {
 	"Audio" : AudioData.new(),
 	"Input" : InputData.new(),
 	"Gameplay" : GameplayData.new(),
+	"Progress": ProgressData.new(),
 }
 
 var debounce_timers:Dictionary[StringName, Timer] = {}

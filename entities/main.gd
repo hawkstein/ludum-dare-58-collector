@@ -16,6 +16,10 @@ const MANA = preload("uid://vrd8l0abflp6")
 
 var fire_mana: int = 0;
 
+func _init() -> void:
+	var frostbolt = UpgradePath.create_frostbolt()
+
+
 func _ready() -> void:
 	ui.hide()
 	pause_window.hide()
