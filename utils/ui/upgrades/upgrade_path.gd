@@ -1,6 +1,8 @@
 class_name UpgradePath
 extends Resource
 
+# Cost: [fire/water/earth/air] crystals.
+
 static func create_fireball() -> SpellEntry:
 	var fireball = SpellEntry.new("Fireball")
 	
@@ -11,6 +13,14 @@ static func create_fireball() -> SpellEntry:
 		{ "value": 1.0, "cost" : [4,0,0,2], },
 	]
 	fireball.add_attribute("rate", rate_values)
+	
+	var damage_values:Array[Dictionary] = [
+		{ "value": 20.0, "cost" : [0,0,0,0], },
+		{ "value": 25.0, "cost" : [1,0,1,0], },
+		{ "value": 40.0, "cost" : [2,0,2,0], },
+		{ "value": 60.0, "cost" : [4,0,4,0], },
+	]
+	fireball.add_attribute("damage", damage_values)
 	
 	var burn_values:Array[Dictionary] = [
 		{ "value": 3.0, "cost" : [0,0,0,0], },
