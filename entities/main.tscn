@@ -129,6 +129,7 @@ y_sort_enabled = true
 [node name="Tower" parent="." instance=ExtResource("5_2runn")]
 unique_name_in_owner = true
 position = Vector2(310, 170)
+scale = Vector2(1, 0.9983467)
 
 [node name="Spells" type="Node2D" parent="."]
 

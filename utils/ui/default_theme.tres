@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=7 format=3 uid="uid://bes7poiouimn8"]
 
-[ext_resource type="FontFile" uid="uid://bobven7q0bksd" path="res://assets/fonts/antiquity-print.ttf" id="1_os6be"]
+[ext_resource type="FontFile" uid="uid://lrc2xak0ht7a" path="res://assets/fonts/PixelSmall.ttf" id="1_os6be"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ht4lr"]
 content_margin_left = 8.0
@@ -38,7 +38,7 @@ thickness = 8
 
 [resource]
 default_font = ExtResource("1_os6be")
-default_font_size = 26
+default_font_size = 22
 Button/colors/font_hover_color = Color(0, 0, 0, 1)
 Button/styles/hover = SubResource("StyleBoxFlat_ht4lr")
 Button/styles/normal = SubResource("StyleBoxFlat_os6be")
