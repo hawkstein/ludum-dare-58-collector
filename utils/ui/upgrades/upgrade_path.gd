@@ -21,10 +21,10 @@ func create_fireball() -> SpellEntry:
 	fireball_entry.add_attribute("rate", rate_values)
 	
 	var damage_values:Array[Dictionary] = [
-		{ "value": 20.0, "cost" : [0,0,0,0], },
-		{ "value": 25.0, "cost" : [1,0,1,0], },
-		{ "value": 40.0, "cost" : [2,0,2,0], },
-		{ "value": 60.0, "cost" : [4,0,4,0], },
+		{ "value": 40.0, "cost" : [0,0,0,0], },
+		{ "value": 50.0, "cost" : [1,0,1,0], },
+		{ "value": 60.0, "cost" : [2,0,2,0], },
+		{ "value": 100.0, "cost" : [4,0,4,0], },
 	]
 	fireball_entry.add_attribute("damage", damage_values)
 	

@@ -107,14 +107,26 @@ func _fire_at_moving_target(target:Enemy) -> void:
 	var cast_position = tower.get_cast_global_position()
 	var expected_flight_time = (target.position - cast_position).length() / spell_velocity
 	var predicted_position = target.predicted_global_position(expected_flight_time)
-	var flight_time = (predicted_position - cast_position).length() / spell_velocity 
+	var flight_time = (predicted_position - cast_position).length() / spell_velocity
+	
 	var tween = create_tween()
 	var fireball_spell = FIREBALL.instantiate()
 	fireball_spell.global_position = cast_position
 	spells.add_child(fireball_spell)
+	
+	var fireball_damage:float = _get_spell_attribute("fireball", "damage")
+	
 	tween.tween_property(fireball_spell, "global_position", predicted_position, flight_time)
-	tween.tween_callback(_damage_target.bind(target))
+	tween.tween_callback(_damage_target.bind(target, fireball_damage))
 	tween.tween_callback(fireball_spell.queue_free)
+
+
+func _get_spell_attribute(spell:StringName, attribute:String) -> Variant:
+	var level = progress.spells.get(spell)[attribute]
+	print(level)
+	var upgrades = UpgradePath.get(spell).attributes[attribute]
+	print(upgrades)
+	return upgrades[level - 1].value
 
 
 func _pick_nearest_target() -> Enemy:
@@ -131,8 +143,8 @@ func _pick_nearest_target() -> Enemy:
 	return nearest_target
 
 
-func _damage_target(target:Enemy) -> void:
-	target.take_damage(50)
+func _damage_target(target:Enemy, amount:float) -> void:
+	target.take_damage(amount)
 	if target.health <= 0:
 		_spawn_mana(target.global_position)
 		target.queue_free()

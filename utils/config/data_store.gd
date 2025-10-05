@@ -16,10 +16,12 @@ var debounce_timers:Dictionary[StringName, Timer] = {}
 func _init() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
+
 func _ready() -> void:
 	for key in data:
 		_load_model(key)
 		data[key].property_updated.connect(save_data_debounced.bind(key))
+
 
 func get_model(key:StringName) -> DataModel:
 	return data[key]
@@ -43,12 +45,14 @@ func save_data(key:StringName) -> void:
 	file_access.store_line(json_string)
 	file_access.close()
 
+
 func save_data_debounced(_property_name:StringName, key: StringName):
 	if not key in debounce_timers:
 		_create_debounce_timer(key)
 	var timer = debounce_timers[key]
 	timer.stop()
 	timer.start()
+
 
 func _create_debounce_timer(key: StringName):
 	var timer = Timer.new()
@@ -58,6 +62,7 @@ func _create_debounce_timer(key: StringName):
 	timer.one_shot = true
 	timer.timeout.connect(save_data.bind(key))
 	debounce_timers[key] = timer
+
 
 func _load_model(key:StringName) -> void:
 	var model_path = SAVE_PATH.format([key])
@@ -75,3 +80,15 @@ func _load_model(key:StringName) -> void:
 		return
 	
 	data[key].from_dict(json.data)
+
+
+func reset_progress() -> void:
+	var progress_path = "user://Progress_data.json"
+	if FileAccess.file_exists(progress_path):
+		var error = DirAccess.remove_absolute(progress_path)
+		if error == OK:
+			print("Progress deleted")
+		else:
+			printerr("Failed to delete file: ", error)
+	else:
+		print("File doesn't exist")

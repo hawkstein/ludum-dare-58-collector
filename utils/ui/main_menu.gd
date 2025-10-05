@@ -7,8 +7,8 @@ func _ready() -> void:
 	var builder := UIBuilder.new()
 	var audio_section = builder.build_section_from_model(DataStore.get_model("Audio"))
 	options_container.add_child(audio_section)
-	#var gameplay_section = builder.build_section_from_model(DataStore.get_model("Gameplay"))
-	#options_container.add_child(gameplay_section)
+	var gameplay_section = builder.build_section_from_model(DataStore.get_model("Gameplay"))
+	options_container.add_child(gameplay_section)
 	#var input_section = builder.build_section_from_model(DataStore.get_model("Input"))
 	#options_container.add_child(input_section)
 	
@@ -32,3 +32,7 @@ func _on_back_button_pressed() -> void:
 
 func _on_credits_button_pressed() -> void:
 	ScreenChanger.change_to("credits")
+
+
+func _on_button_pressed() -> void:
+	DataStore.reset_progress()
