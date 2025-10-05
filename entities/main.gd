@@ -48,8 +48,8 @@ func _ready() -> void:
 func _on_tower_tower_destroyed() -> void:
 	ui.show()
 	var progress:ProgressData = DataStore.get_model("Progress")
-	var loop_count = progress.loop_count
-	progress.update(loop_count + 1, "loop_count")
+	var loop_count = progress.loop_count + 1
+	progress.update(loop_count, "loop_count")
 	ui.show_loop(loop_count)
 	hud.hide()
 	for child in enemies.get_children():

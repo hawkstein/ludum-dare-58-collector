@@ -1,0 +1,109 @@
+[gd_scene load_steps=10 format=3 uid="uid://c21flj4bwlmu6"]
+
+[ext_resource type="Texture2D" uid="uid://vdljhbqb8m4w" path="res://assets/clock/clock.png" id="1_lngx1"]
+[ext_resource type="Texture2D" uid="uid://c0mhnfed1sjw8" path="res://assets/clock/clock_minute.png" id="2_re8fd"]
+[ext_resource type="Texture2D" uid="uid://duilmabrs1c5f" path="res://assets/clock/clock_hour.png" id="3_re8fd"]
+
+[sub_resource type="Animation" id="Animation_re8fd"]
+resource_name = "rewind"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MinuteSprite:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [6.265732, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_4ldhw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MinuteSprite:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [6.265732]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4ldhw"]
+_data = {
+&"RESET": SubResource("Animation_4ldhw"),
+&"rewind": SubResource("Animation_re8fd")
+}
+
+[sub_resource type="Animation" id="Animation_ruk8s"]
+resource_name = "rewind"
+length = 24.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../HourSprite:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 24),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [6.265732, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_x47xc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../HourSprite:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [6.265732]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_80wa8"]
+_data = {
+&"RESET": SubResource("Animation_x47xc"),
+&"rewind": SubResource("Animation_ruk8s")
+}
+
+[node name="Clock" type="Node2D"]
+
+[node name="FaceSprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_lngx1")
+
+[node name="MinuteSprite" type="Sprite2D" parent="."]
+rotation = 6.265732
+texture = ExtResource("2_re8fd")
+offset = Vector2(4, 0)
+
+[node name="HourSprite" type="Sprite2D" parent="."]
+rotation = 6.265732
+texture = ExtResource("3_re8fd")
+offset = Vector2(4, -1)
+
+[node name="MinuteAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_4ldhw")
+}
+autoplay = "rewind"
+
+[node name="HourAnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../MinuteAnimationPlayer")
+libraries = {
+&"": SubResource("AnimationLibrary_80wa8")
+}
+autoplay = "rewind"
