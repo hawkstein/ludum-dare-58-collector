@@ -4,7 +4,7 @@ const FIREBALL = preload("uid://6a3l6orrerda")
 const MANA = preload("uid://vrd8l0abflp6")
 
 @onready var pause_window: Control = %PauseWindow
-@onready var ui: CanvasLayer = $UI
+@onready var ui: MainUserInterface = $UI
 @onready var hud: CanvasLayer = $HUD
 @onready var tower: Tower = %Tower
 @onready var enemies: Node2D = %Enemies
@@ -47,6 +47,10 @@ func _ready() -> void:
 
 func _on_tower_tower_destroyed() -> void:
 	ui.show()
+	var progress:ProgressData = DataStore.get_model("Progress")
+	var loop_count = progress.loop_count
+	progress.update(loop_count + 1, "loop_count")
+	ui.show_loop(loop_count)
 	hud.hide()
 	for child in enemies.get_children():
 		child.queue_free()
@@ -205,3 +209,7 @@ func _reset_drops() -> void:
 
 func _update_mana_count() -> void:
 	gauge.update_gauge(fire_mana, water_mana, earth_mana, air_mana, max_drops)
+
+
+func _on_upgrade_button_pressed() -> void:
+	ui.show_upgrade()

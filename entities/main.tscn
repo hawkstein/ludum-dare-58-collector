@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://vck4bl5wwflb"]
+[gd_scene load_steps=12 format=3 uid="uid://vck4bl5wwflb"]
 
 [ext_resource type="Script" uid="uid://omkrdyrq3u73" path="res://entities/main.gd" id="1_h2yge"]
+[ext_resource type="Script" uid="uid://1c4hqhx0ksqt" path="res://entities/ui.gd" id="2_re4i5"]
 [ext_resource type="Script" uid="uid://c4c022kbafkwr" path="res://entities/mana_gauge.gd" id="3_5ibuq"]
 [ext_resource type="Texture2D" uid="uid://2l48duflkw4m" path="res://utils/ui/gauge/gauge.png" id="3_yn4gj"]
 [ext_resource type="Texture2D" uid="uid://dcb46l45qknod" path="res://entities/background/background.png" id="4_msjn6"]
@@ -21,7 +22,8 @@ script = ExtResource("1_h2yge")
 
 [node name="UI" type="CanvasLayer" parent="."]
 process_mode = 2
-visible = false
+layer = 2
+script = ExtResource("2_re4i5")
 
 [node name="Layout" type="Control" parent="UI"]
 layout_mode = 3
@@ -55,10 +57,48 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Layout/MarginContainer"]
+[node name="LoopPage" type="Control" parent="UI/Layout/MarginContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ResetButton" type="Button" parent="UI/Layout/MarginContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Layout/MarginContainer/LoopPage"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LoopCount" type="Label" parent="UI/Layout/MarginContainer/LoopPage/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Loop: 0"
+
+[node name="Spacer" type="Control" parent="UI/Layout/MarginContainer/LoopPage/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="UpgradeButton" type="Button" parent="UI/Layout/MarginContainer/LoopPage/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Purchase upgrades"
+
+[node name="UpgradePage" type="Control" parent="UI/Layout/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Layout/MarginContainer/UpgradePage"]
+layout_mode = 0
+offset_right = 580.0
+offset_bottom = 300.0
+
+[node name="Spacer" type="Control" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ResetButton" type="Button" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Start again"
@@ -256,7 +296,8 @@ scale = Vector2(1, 0.9983467)
 position = Vector2(309, 65)
 scale = Vector2(0.9537539, 1)
 
-[connection signal="pressed" from="UI/Layout/MarginContainer/VBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
+[connection signal="pressed" from="UI/Layout/MarginContainer/LoopPage/VBoxContainer/UpgradeButton" to="." method="_on_upgrade_button_pressed"]
+[connection signal="pressed" from="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
 [connection signal="timeout" from="WaveSpawner/SpawnTimer" to="WaveSpawner" method="_on_spawn_timer_timeout"]
 [connection signal="cast_spell" from="Tower" to="." method="_on_tower_cast_spell"]
 [connection signal="tower_destroyed" from="Tower" to="." method="_on_tower_tower_destroyed"]
