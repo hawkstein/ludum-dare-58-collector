@@ -8,39 +8,43 @@ var air_crystals := 0
 
 var loop_count := 0
 
-#var spells := {
-	#"fireball": {
-		#"speed": 10.0,
-		#"range": 200.0,
-		#"rate": 3.0,
-		#"burn": 5.0,
-	#},
-	#"frostbolt": {
-		#"speed": 10.0,
-		#"range": 200.0,
-		#"rate": 3.0,
-		#"slow": 5.0,
-	#},
-	#"rock": {
-		#"speed": 10.0,
-		#"range": 200.0,
-		#"rate": 3.0,
-		#"area": 5.0,
-	#},
-	#"cyclone": {
-		#"speed": 10.0,
-		#"range": 200.0,
-		#"rate": 3.0,
-		#"duration": 5.0,
-	#}
-#}
-
-var collector := {
-	"speed": 10.0,
-	"radius": 10.0,
-	"duration": 1.0,
-	"rate": 3.0
+var spells := {
+	"fireball": {
+		"damage": 1,
+		"range": 1,
+		"rate": 1,
+		"burn": 1,
+	},
+	"frostbolt": {
+		"speed": 0,
+		"range": 0,
+		"rate": 0,
+		"slow": 0,
+	},
+	"rock": {
+		"speed": 0,
+		"range": 0,
+		"rate": 0,
+		"area": 0,
+	},
+	"tornado": {
+		"speed": 0,
+		"range": 0,
+		"rate": 0,
+		"duration": 0,
+	}
 }
 
-func _init() -> void:
-	pass
+var collector_levels: Dictionary[StringName, int]= {
+	"speed": 0,
+	"radius": 0,
+	"duration": 0,
+	"rate": 0
+}
+
+func from_dict(dict: Dictionary):
+	super.from_dict(dict)
+	for key in spells.keys():
+		var spell:Dictionary = spells[key]
+		for attr_key in spell.keys():
+			spells[key][attr_key] = int(spells[key][attr_key])

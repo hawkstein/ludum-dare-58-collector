@@ -4,12 +4,16 @@ extends Area2D
 signal tower_destroyed
 signal cast_spell(spell:String)
 
-var max_health: float = 1000.0
+var max_health: float = 100.0
 var current_health: float = 1000.0
 
 @onready var health_bar: Node2D = $HealthBar
 @onready var spell_timers: Node2D = $SpellTimers
 @onready var cast_node: Node2D = $CastNode
+
+@onready var progress: ProgressData = DataStore.get_model("Progress")
+
+var fireball_upgrades = UpgradePath.create_fireball()
 
 func _ready() -> void:
 	reset()
@@ -31,9 +35,11 @@ func reset() -> void:
 
 
 func _build_timers() -> void:
+	var fireball_rates = fireball_upgrades.attributes.rate
+	var rate_level = progress.spells.fireball.rate
 	var fireball_timer = Timer.new()
 	fireball_timer.autostart = true
-	fireball_timer.wait_time = 3.0
+	fireball_timer.wait_time = fireball_rates[rate_level - 1].value
 	spell_timers.add_child(fireball_timer)
 	fireball_timer.timeout.connect(cast_spell.emit.bind("fireball"))
 

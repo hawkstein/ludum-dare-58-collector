@@ -131,7 +131,6 @@ size_flags_vertical = 3
 
 [node name="GrimoireVBox" type="VBoxContainer" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/Tabs"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -141,7 +140,21 @@ grow_vertical = 2
 
 [node name="Label" type="Label" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/Tabs/GrimoireVBox"]
 layout_mode = 2
-text = "Grimoire bits go here"
+text = "Unlock and upgrade the spells you cast"
+
+[node name="SpellsTabBar" type="TabBar" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/Tabs/GrimoireVBox"]
+layout_mode = 2
+current_tab = 0
+tab_count = 4
+tab_0/title = "Fireball"
+tab_1/title = "Frostbolt"
+tab_2/title = "Rockfall"
+tab_3/title = "Tornado"
+
+[node name="SpellVBox" type="VBoxContainer" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/Tabs/GrimoireVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
 
 [node name="CollectorVBox" type="VBoxContainer" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/Tabs"]
 unique_name_in_owner = true
@@ -156,6 +169,7 @@ text = "Collector bits go Here"
 
 [node name="TowerVBox" type="VBoxContainer" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/Tabs"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -364,6 +378,7 @@ scale = Vector2(0.9537539, 1)
 
 [connection signal="pressed" from="UI/Layout/MarginContainer/LoopPage/VBoxContainer/UpgradeButton" to="." method="_on_upgrade_button_pressed"]
 [connection signal="tab_changed" from="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/TabBar" to="UI/Layout/MarginContainer/UpgradePage" method="_on_tab_bar_tab_changed"]
+[connection signal="tab_changed" from="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/Tabs/GrimoireVBox/SpellsTabBar" to="UI/Layout/MarginContainer/UpgradePage" method="_on_spells_tab_bar_tab_changed"]
 [connection signal="pressed" from="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
 [connection signal="timeout" from="WaveSpawner/SpawnTimer" to="WaveSpawner" method="_on_spawn_timer_timeout"]
 [connection signal="cast_spell" from="Tower" to="." method="_on_tower_cast_spell"]

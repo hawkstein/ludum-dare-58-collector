@@ -14,19 +14,24 @@ const MANA = preload("uid://vrd8l0abflp6")
 @onready var mana: Node2D = $Mana
 @onready var gauge: ManaGauge = %Gauge
 
+@onready var progress:ProgressData = DataStore.get_model("Progress")
+
 var fire_mana: int = 0
 var water_mana: int = 0
 var earth_mana: int = 0
 var air_mana: int = 0
 var max_drops: int = 5
+var conversation_rate: int = 1
 
 var fire_crystals: int = 0
 var water_crystals: int = 0
 var earth_crystals: int = 0
 var air_crystals: int = 0
 
+var fireball_path = UpgradePath.create_fireball()
+
 func _init() -> void:
-	#var frostbolt = UpgradePath.create_frostbolt()
+	#var frostbolt = 
 	pass
 
 
@@ -34,6 +39,7 @@ func _ready() -> void:
 	ui.hide()
 	pause_window.hide()
 	_update_mana_count()
+	_update_crystals_from_progress()
 
 
 #func _input(_event: InputEvent) -> void:
@@ -47,9 +53,13 @@ func _ready() -> void:
 
 func _on_tower_tower_destroyed() -> void:
 	ui.show()
-	var progress:ProgressData = DataStore.get_model("Progress")
+	
 	var loop_count = progress.loop_count + 1
 	progress.update(loop_count, "loop_count")
+	progress.update(fire_crystals, "fire_crystals")
+	progress.update(water_crystals, "water_crystals")
+	progress.update(earth_crystals, "earth_crystals")
+	progress.update(air_crystals, "air_crystals")
 	ui.show_loop(loop_count)
 	hud.hide()
 	for child in enemies.get_children():
@@ -66,11 +76,13 @@ func reset() -> void:
 	hud.show()
 	get_tree().paused = false
 	tower.reset()
+	wave_spawner.reset()
 	wave_spawner.spawn_wave()
 	collector.reset()
 	
 	_reset_drops()
 	_update_mana_count()
+	_update_crystals_from_progress()
 
 
 func _on_reset_button_pressed() -> void:
@@ -209,6 +221,14 @@ func _reset_drops() -> void:
 
 func _update_mana_count() -> void:
 	gauge.update_gauge(fire_mana, water_mana, earth_mana, air_mana, max_drops)
+
+
+func _update_crystals_from_progress() -> void:
+	fire_crystals = progress.fire_crystals
+	water_crystals = progress.water_crystals
+	earth_crystals = progress.earth_crystals
+	air_crystals = progress.air_crystals
+	gauge.update_crystals(fire_crystals, water_crystals, earth_crystals, air_crystals)
 
 
 func _on_upgrade_button_pressed() -> void:

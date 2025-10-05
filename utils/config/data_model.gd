@@ -22,6 +22,8 @@ func from_dict(dict: Dictionary):
 				var typed_array:Array[String] = []
 				typed_array.assign(dict[p.name])
 				set(p.name, typed_array)
+			elif p.type == Variant.Type.TYPE_INT:
+				set(p.name, int(dict[p.name]))
 			else:
 				set(p.name, dict[p.name])
 

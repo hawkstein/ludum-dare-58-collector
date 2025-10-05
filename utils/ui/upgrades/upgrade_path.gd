@@ -52,3 +52,25 @@ static func create_frostbolt() -> SpellEntry:
 	frostbolt.add_attribute("slow", slow_values)
 	
 	return frostbolt
+
+
+static func create_collector() -> SpellEntry:
+	var collector = SpellEntry.new("Collector")
+	
+	var size_values:Array[Dictionary] = [
+		{ "value": "S", "cost": [1,0,0,0] },
+		{ "value": "M", "cost": [2,0,0,0] },
+		{ "value": "L", "cost": [3,0,0,0] },
+		{ "value": "XL", "cost": [4,0,0,0] },
+	]
+	collector.add_attribute("size", size_values)
+	
+	var ratio_values:Array[Dictionary] = [
+		{ "value": "1/5", "cost": [1,1,1,1] },
+		{ "value": "3/10", "cost": [2,2,2,2] },
+		{ "value": "10/20", "cost": [6,6,6,6] },
+		{ "value": "20/30", "cost": [20,20,20,20] },
+	]
+	collector.add_attribute("ratio", ratio_values)
+	
+	return collector

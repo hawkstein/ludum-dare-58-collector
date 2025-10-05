@@ -14,9 +14,14 @@ func _ready() -> void:
 	spawn_wave()
 
 
+func reset() -> void:
+	enemy_spawns = 5
+
+
 func spawn_wave() -> void:
 	for i in range(enemy_spawns):
 		spawn_enemy(ENEMY, get_random_position())
+	enemy_spawns += 3
 	spawn_timer.start()
 
 
