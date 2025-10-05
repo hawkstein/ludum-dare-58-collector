@@ -37,7 +37,7 @@ var spells := {
 
 var collector_levels: Dictionary[StringName, int] = {
 	"speed": 1,
-	"radius": 1,
+	"size": 1,
 	"ratio": 1,
 }
 

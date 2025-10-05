@@ -34,6 +34,16 @@ func _ready() -> void:
 	pause_window.hide()
 	_update_mana_count()
 	_update_crystals_from_progress()
+	_update_collector_ratio()
+
+
+func _update_collector_ratio() -> void:
+	var ratio_level = progress.collector_levels.ratio
+	var ratio_upgrades = UpgradePath.collector.attributes.ratio
+	var ratio:String = ratio_upgrades[ratio_level - 1].value
+	var split = ratio.split("/")
+	conversation_rate = int(split[0])
+	max_drops = int(split[1])
 
 
 #func _input(_event: InputEvent) -> void:
@@ -77,6 +87,7 @@ func reset() -> void:
 	_reset_drops()
 	_update_mana_count()
 	_update_crystals_from_progress()
+	_update_collector_ratio()
 
 
 func _on_reset_button_pressed() -> void:
@@ -198,13 +209,13 @@ func _get_crystal(mana_types:Array[Mana.Type]) -> void:
 	print("add ", Mana.type_to_string(chosen), " crystal")
 	match chosen:
 		Mana.Type.FIRE:
-			fire_crystals += 1
+			fire_crystals += conversation_rate
 		Mana.Type.WATER:
-			water_crystals += 1
+			water_crystals += conversation_rate
 		Mana.Type.EARTH:
-			earth_crystals += 1
+			earth_crystals += conversation_rate
 		Mana.Type.AIR:
-			air_crystals += 1
+			air_crystals += conversation_rate
 	gauge.update_crystals(fire_crystals, water_crystals, earth_crystals, air_crystals)
 
 func _reset_drops() -> void:

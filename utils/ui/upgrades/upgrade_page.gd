@@ -14,6 +14,9 @@ var progress: ProgressData = DataStore.get_model("Progress")
 
 func _ready() -> void:
 	_on_tab_bar_tab_changed(0)
+	_on_spells_tab_bar_tab_changed(0)
+	_create_collector_tab()
+	_create_tower_tab()
 
 
 func _on_tab_bar_tab_changed(tab: int) -> void:
@@ -64,7 +67,7 @@ func _create_unlocked_spell_tab(spell_entry:SpellEntry) -> void:
 		var has_next_level = spell_entry.attributes[key].size() >= next_level
 		if has_next_level:
 			upgrade_button.text = "Buy Level {0}".format([next_level])
-			upgrade_button.pressed.connect(_purchase_upgrade.bind("fireball", key, next_level, upgrade_button), ConnectFlags.CONNECT_ONE_SHOT)
+			upgrade_button.pressed.connect(_purchase_spell_upgrade.bind("fireball", key, next_level, upgrade_button), ConnectFlags.CONNECT_ONE_SHOT)
 		else:
 			upgrade_button.text = "Complete"
 			upgrade_button.disabled = true
@@ -77,18 +80,17 @@ func _create_unlocked_spell_tab(spell_entry:SpellEntry) -> void:
 		spell_v_box.add_child(h_box)
 
 
-func _purchase_upgrade(spell:StringName, attribute:String, level:int, upgrade_button) -> void:
+func _purchase_spell_upgrade(spell:StringName, attribute:String, level:int, upgrade_button) -> void:
 	print("purchase level {0} {1} for {2}".format([str(level), attribute, spell]))
 	progress.spells[spell][attribute] = level
 	progress.update(progress.spells, "spells")
-	print(progress.spells[spell][attribute])
-	var attr_level = progress.spells.fireball[attribute]
+	var attr_level = progress.spells.get(spell)[attribute]
 	var spell_entry: SpellEntry = UpgradePath.get(spell)
 	var next_level = attr_level + 1
 	var has_next_level = spell_entry.attributes[attribute].size() >= next_level
 	if has_next_level:
 		upgrade_button.text = "Buy Level {0}".format([next_level])
-		upgrade_button.pressed.connect(_purchase_upgrade.bind("fireball", attribute, next_level, upgrade_button), ConnectFlags.CONNECT_ONE_SHOT)
+		upgrade_button.pressed.connect(_purchase_spell_upgrade.bind(spell, attribute, next_level, upgrade_button), ConnectFlags.CONNECT_ONE_SHOT)
 	else:
 		upgrade_button.text = "Complete"
 		upgrade_button.disabled = true
@@ -100,3 +102,49 @@ func _create_locked_spell_tab(spell_entry:SpellEntry) -> void:
 	unlock_button.text = "Unlock {0}".format([spell_entry.spell_name])
 	h_box.add_child(unlock_button)
 	spell_v_box.add_child(h_box)
+
+
+func _create_collector_tab() -> void:
+	var collector_entry = UpgradePath.collector
+	var attr_keys = collector_entry.attributes.keys()
+	for key in attr_keys:
+		var h_box:HBoxContainer = HBoxContainer.new()
+		var l:Label = Label.new()
+		l.text = key
+		h_box.add_child(l)
+		var upgrade_button:Button = Button.new()
+		var attr_level = progress.collector_levels[key]
+		var next_level = attr_level + 1
+		var has_next_level = collector_entry.attributes[key].size() >= next_level
+		if has_next_level:
+			upgrade_button.text = "Buy Level {0}".format([next_level])
+			upgrade_button.pressed.connect(_purchase_collector_upgrade.bind(key, next_level, upgrade_button), ConnectFlags.CONNECT_ONE_SHOT)
+		else:
+			upgrade_button.text = "Complete"
+			upgrade_button.disabled = true
+		h_box.add_child(upgrade_button)
+		if has_next_level:
+			var cost: Label = Label.new()
+			var attribute = collector_entry.attributes[key]
+			cost.text = "{0} {1} {2} {3}".format(attribute[0].cost)
+			h_box.add_child(cost)
+		collector_v_box.add_child(h_box)
+
+
+func _purchase_collector_upgrade(attribute:String, level:int, upgrade_button) -> void:
+	progress.collector_levels[attribute] = level
+	progress.update(progress.collector_levels, "collector_levels")
+	var attr_level = progress.collector_levels[attribute]
+	var spell_entry: SpellEntry = UpgradePath.collector
+	var next_level = attr_level + 1
+	var has_next_level = spell_entry.attributes[attribute].size() >= next_level
+	if has_next_level:
+		upgrade_button.text = "Buy Level {0}".format([next_level])
+		upgrade_button.pressed.connect(_purchase_collector_upgrade.bind(attribute, next_level, upgrade_button), ConnectFlags.CONNECT_ONE_SHOT)
+	else:
+		upgrade_button.text = "Complete"
+		upgrade_button.disabled = true
+
+
+func _create_tower_tab() -> void:
+	pass

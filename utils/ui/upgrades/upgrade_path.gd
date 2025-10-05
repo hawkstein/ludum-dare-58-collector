@@ -135,7 +135,7 @@ func create_collector() -> SpellEntry:
 	var collector_entry = SpellEntry.new("Collector")
 	
 	var size_values:Array[Dictionary] = [
-		{ "value": "S", "cost": [1,0,0,0] },
+		{ "value": "S", "cost": [0,0,0,0] },
 		{ "value": "M", "cost": [2,0,0,0] },
 		{ "value": "L", "cost": [3,0,0,0] },
 		{ "value": "XL", "cost": [4,0,0,0] },
@@ -143,11 +143,19 @@ func create_collector() -> SpellEntry:
 	collector_entry.add_attribute("size", size_values)
 	
 	var ratio_values:Array[Dictionary] = [
-		{ "value": "1/5", "cost": [1,1,1,1] },
+		{ "value": "1/5", "cost": [0,0,0,0] },
 		{ "value": "3/10", "cost": [2,2,2,2] },
 		{ "value": "10/20", "cost": [6,6,6,6] },
 		{ "value": "20/30", "cost": [20,20,20,20] },
 	]
 	collector_entry.add_attribute("ratio", ratio_values)
+	
+	var speed_values:Array[Dictionary] = [
+		{ "value": 20, "cost": [0,0,0,0] },
+		{ "value": 30, "cost": [2,2,2,2] },
+		{ "value": 40, "cost": [6,6,6,6] },
+		{ "value": 60, "cost": [20,20,20,20] },
+	]
+	collector_entry.add_attribute("speed", speed_values)
 	
 	return collector_entry
