@@ -12,12 +12,18 @@ const MANA = preload("uid://vrd8l0abflp6")
 @onready var collector: CharacterBody2D = $Collector
 @onready var spells: Node2D = $Spells
 @onready var mana: Node2D = $Mana
-@onready var mana_count: Label = %ManaCount
+@onready var gauge: ManaGauge = %Gauge
 
-var fire_mana: int = 0;
-var water_mana: int = 0;
-var earth_mana: int = 0;
-var air_mana: int = 0;
+var fire_mana: int = 0
+var water_mana: int = 0
+var earth_mana: int = 0
+var air_mana: int = 0
+var max_drops: int = 5
+
+var fire_crystals: int = 0
+var water_crystals: int = 0
+var earth_crystals: int = 0
+var air_crystals: int = 0
 
 func _init() -> void:
 	#var frostbolt = UpgradePath.create_frostbolt()
@@ -27,6 +33,7 @@ func _init() -> void:
 func _ready() -> void:
 	ui.hide()
 	pause_window.hide()
+	_update_mana_count()
 
 
 #func _input(_event: InputEvent) -> void:
@@ -58,10 +65,7 @@ func reset() -> void:
 	wave_spawner.spawn_wave()
 	collector.reset()
 	
-	fire_mana = 0
-	water_mana = 0
-	earth_mana = 0
-	air_mana = 0
+	_reset_drops()
 	_update_mana_count()
 
 
@@ -150,8 +154,54 @@ func _pickup_mana(mana_drop:Mana) -> void:
 			earth_mana += 1
 		Mana.Type.AIR:
 			air_mana += 1
+	
+	_check_drops()
 	_update_mana_count()
+
+func _check_drops() -> void:
+	var total := fire_mana + water_mana + earth_mana + air_mana
+	if total > max_drops:
+		var drops = {
+			Mana.Type.FIRE: fire_mana,
+			Mana.Type.WATER: water_mana,
+			Mana.Type.EARTH: earth_mana,
+			Mana.Type.AIR: air_mana
+		}
+		var largest_amounts:Array[Mana.Type] = []
+		var biggest_value = 0
+
+		for mana_type in drops:
+			if drops[mana_type] > biggest_value:
+				biggest_value = drops[mana_type]
+		
+		for mana_type in drops:
+			if drops[mana_type] == biggest_value:
+				largest_amounts.append(mana_type)
+		
+		_get_crystal(largest_amounts)
+		_reset_drops()
+
+
+func _get_crystal(mana_types:Array[Mana.Type]) -> void:
+	var chosen = mana_types.pick_random()
+	print("add ", Mana.type_to_string(chosen), " crystal")
+	match chosen:
+		Mana.Type.FIRE:
+			fire_crystals += 1
+		Mana.Type.WATER:
+			water_crystals += 1
+		Mana.Type.EARTH:
+			earth_crystals += 1
+		Mana.Type.AIR:
+			air_crystals += 1
+	gauge.update_crystals(fire_crystals, water_crystals, earth_crystals, air_crystals)
+
+func _reset_drops() -> void:
+	fire_mana = 0
+	water_mana = 0
+	earth_mana = 0
+	air_mana = 0
 
 
 func _update_mana_count() -> void:
-	mana_count.text = "Mana: {0} {1} {2} {3}".format([str(fire_mana) ,str(water_mana), str(earth_mana), str(air_mana)])
+	gauge.update_gauge(fire_mana, water_mana, earth_mana, air_mana, max_drops)

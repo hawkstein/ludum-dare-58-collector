@@ -15,6 +15,29 @@ static var texture_map:Dictionary[Type,Resource] = {
 	Type.AIR: AIR_MANA,
 }
 
+var opposites = {
+	Type.FIRE: Type.WATER,
+	Type.WATER: Type.FIRE,
+	Type.EARTH: Type.AIR,
+	Type.AIR: Type.EARTH
+}
+
+# TODO: finish updating
+var complements = {
+	Type.FIRE: Type.AIR,
+	Type.WATER: Type.FIRE,
+	Type.EARTH: Type.AIR,
+	Type.AIR: Type.EARTH
+}
+
+# TODO: finish updating
+var antagonists = {
+	Type.FIRE: Type.EARTH,
+	Type.WATER: Type.FIRE,
+	Type.EARTH: Type.AIR,
+	Type.AIR: Type.EARTH
+}
+
 signal mana_collected
 
 @onready var area_2d: Area2D = $Area2D
@@ -34,3 +57,17 @@ func _on_area_2d_body_entered(_body: Node2D) -> void:
 	area_2d.set_deferred("monitoring", false)
 	is_collected = true
 	mana_collected.emit()
+
+
+static func type_to_string(type_to_convert:Type) -> String:
+	match type_to_convert:
+		Type.FIRE:
+			return "Fire"
+		Type.WATER:
+			return "Water"
+		Type.EARTH:
+			return "Earth"
+		Type.AIR:
+			return "Air"
+		_:
+			return ""
