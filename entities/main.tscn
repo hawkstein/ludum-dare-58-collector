@@ -178,10 +178,19 @@ offset_bottom = 40.0
 layout_mode = 2
 text = "Tower bits go here"
 
-[node name="ResetButton" type="Button" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Start again"
+theme_override_constants/separation = 20
+
+[node name="ResetButton" type="Button" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "defend tower again"
+
+[node name="RefundButton" type="Button" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Refund all purchases"
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
@@ -379,7 +388,7 @@ scale = Vector2(0.9537539, 1)
 [connection signal="pressed" from="UI/Layout/MarginContainer/LoopPage/VBoxContainer/UpgradeButton" to="." method="_on_upgrade_button_pressed"]
 [connection signal="tab_changed" from="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/TabBar" to="UI/Layout/MarginContainer/UpgradePage" method="_on_tab_bar_tab_changed"]
 [connection signal="tab_changed" from="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/Tabs/GrimoireVBox/SpellsTabBar" to="UI/Layout/MarginContainer/UpgradePage" method="_on_spells_tab_bar_tab_changed"]
-[connection signal="pressed" from="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
+[connection signal="pressed" from="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/HBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
 [connection signal="timeout" from="WaveSpawner/SpawnTimer" to="WaveSpawner" method="_on_spawn_timer_timeout"]
 [connection signal="cast_spell" from="Tower" to="." method="_on_tower_cast_spell"]
 [connection signal="tower_destroyed" from="Tower" to="." method="_on_tower_tower_destroyed"]
