@@ -4,16 +4,13 @@ extends Area2D
 signal tower_destroyed
 signal cast_spell(spell:String)
 
-var max_health: float = 100.0
-var current_health: float = 1000.0
-
 @onready var health_bar: Node2D = $HealthBar
 @onready var spell_timers: Node2D = $SpellTimers
 @onready var cast_node: Node2D = $CastNode
 
-@onready var progress: ProgressData = DataStore.get_model("Progress")
-
-var fireball_upgrades = UpgradePath.create_fireball()
+var progress: ProgressData = DataStore.get_model("Progress")
+var max_health: float = 1000.0
+var current_health: float = 1000.0
 
 func _ready() -> void:
 	reset()
@@ -35,13 +32,17 @@ func reset() -> void:
 
 
 func _build_timers() -> void:
-	var fireball_rates = fireball_upgrades.attributes.rate
-	var rate_level = progress.spells.fireball.rate
-	var fireball_timer = Timer.new()
-	fireball_timer.autostart = true
-	fireball_timer.wait_time = fireball_rates[rate_level - 1].value
-	spell_timers.add_child(fireball_timer)
-	fireball_timer.timeout.connect(cast_spell.emit.bind("fireball"))
+	for key in progress.spells.keys():
+		var spell = progress.spells[key]
+		if not spell.unlocked:
+			continue
+		var rates = UpgradePath.get(key).attributes.rate
+		var rate_idx = spell.rate - 1
+		var spell_timer = Timer.new()
+		spell_timer.autostart = true
+		spell_timer.wait_time = rates[rate_idx].value
+		spell_timers.add_child(spell_timer)
+		spell_timer.timeout.connect(cast_spell.emit.bind(key))
 
 
 func _on_enemy_attacked_tower(attack_strength:float) -> void:

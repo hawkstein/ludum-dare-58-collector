@@ -28,12 +28,6 @@ var water_crystals: int = 0
 var earth_crystals: int = 0
 var air_crystals: int = 0
 
-var fireball_path = UpgradePath.create_fireball()
-
-func _init() -> void:
-	#var frostbolt = 
-	pass
-
 
 func _ready() -> void:
 	ui.hide()
@@ -91,9 +85,10 @@ func _on_reset_button_pressed() -> void:
 
 func _on_tower_cast_spell(spell: String) -> void:
 	print("casting ", spell, "...")
-	var target = _pick_nearest_target()
-	if target:
-		_fire_at_moving_target(target)
+	if spell == "fireball":
+		var target = _pick_nearest_target()
+		if target:
+			_fire_at_moving_target(target)
 
 
 func _fire_at_moving_target(target:Enemy) -> void:

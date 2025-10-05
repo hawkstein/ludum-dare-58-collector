@@ -3,6 +3,7 @@ extends RefCounted
 
 var spell_name:String
 var is_unlocked:bool = false
+var unlock_cost:Array[int]
 var attributes:Dictionary = {}
 
 func _init(p_name:String) -> void:

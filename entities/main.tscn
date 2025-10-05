@@ -148,7 +148,7 @@ current_tab = 0
 tab_count = 4
 tab_0/title = "Fireball"
 tab_1/title = "Frostbolt"
-tab_2/title = "Rockfall"
+tab_2/title = "Rockblast"
 tab_3/title = "Tornado"
 
 [node name="SpellVBox" type="VBoxContainer" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/Tabs/GrimoireVBox"]

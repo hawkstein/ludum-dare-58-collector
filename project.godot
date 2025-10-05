@@ -24,6 +24,7 @@ config/icon="res://icon.svg"
 DataStore="*res://utils/config/data_store.gd"
 ScreenChanger="*res://utils/screen_changer.tscn"
 AudioManager="*res://utils/audio_manager.gd"
+UpgradePath="*res://utils/ui/upgrades/upgrade_path.gd"
 
 [display]
 

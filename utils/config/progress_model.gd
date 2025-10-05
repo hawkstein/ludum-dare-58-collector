@@ -10,41 +10,53 @@ var loop_count := 0
 
 var spells := {
 	"fireball": {
+		"unlocked": true,
 		"damage": 1,
-		"range": 1,
 		"rate": 1,
 		"burn": 1,
 	},
 	"frostbolt": {
-		"speed": 0,
-		"range": 0,
+		"unlocked": false,
+		"damage": 0,
 		"rate": 0,
 		"slow": 0,
 	},
-	"rock": {
-		"speed": 0,
-		"range": 0,
+	"rockblast": {
+		"unlocked": false,
+		"damage": 0,
 		"rate": 0,
 		"area": 0,
 	},
 	"tornado": {
-		"speed": 0,
-		"range": 0,
+		"unlocked": false,
+		"damage": 0,
 		"rate": 0,
 		"duration": 0,
 	}
 }
 
-var collector_levels: Dictionary[StringName, int]= {
-	"speed": 0,
-	"radius": 0,
-	"duration": 0,
-	"rate": 0
+var collector_levels: Dictionary[StringName, int] = {
+	"speed": 1,
+	"radius": 1,
+	"ratio": 1,
+}
+
+var tower_levels: Dictionary[StringName, int] = {
+	"hp": 1,
+	"drops": 1,
 }
 
 func from_dict(dict: Dictionary):
 	super.from_dict(dict)
+	
 	for key in spells.keys():
 		var spell:Dictionary = spells[key]
 		for attr_key in spell.keys():
-			spells[key][attr_key] = int(spells[key][attr_key])
+			if attr_key != "unlocked":
+				spells[key][attr_key] = int(spells[key][attr_key])
+	
+	for key in collector_levels.keys():
+		collector_levels[key] = int(collector_levels[key])
+	
+	for key in tower_levels.keys():
+		tower_levels[key] = int(tower_levels[key])
