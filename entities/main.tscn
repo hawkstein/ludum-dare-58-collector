@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://vck4bl5wwflb"]
 
 [ext_resource type="Script" uid="uid://omkrdyrq3u73" path="res://entities/main.gd" id="1_h2yge"]
-[ext_resource type="Texture2D" uid="uid://0nirocpy58ay" path="res://entities/background/game-background.png" id="4_1v22p"]
+[ext_resource type="Texture2D" uid="uid://dcb46l45qknod" path="res://entities/background/background.png" id="4_msjn6"]
 [ext_resource type="PackedScene" uid="uid://dpu03gqasp6pe" path="res://entities/tower/tower.tscn" id="5_2runn"]
 [ext_resource type="Theme" uid="uid://bes7poiouimn8" path="res://utils/ui/default_theme.tres" id="5_lquwl"]
 [ext_resource type="Script" uid="uid://bpfk6cgrwismq" path="res://entities/wave_spawner.gd" id="6_2v7j7"]
@@ -10,9 +10,9 @@
 
 [sub_resource type="Curve2D" id="Curve2D_2runn"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, -1, -11, 0, 0, 0, 0, 269, -13, 0, 0, 0, 0, 966, -11, 0, 0, 0, 0, 970, 544, 0, 0, 0, 0, 470, 546, 0, 0, 0, 0, -3, 550, 0, 0, 0, 0, -9, 223, 0, 0, 0, 0, -1, -11)
+"points": PackedVector2Array(0, 0, 0, 0, 241, -19, 0, 0, 0, 0, -21, -20, 0, 0, 0, 0, -25, 352, 0, 0, 0, 0, 639, 355, 0, 0, 0, 0, 639, -28, 0, 0, 0, 0, 377, -22)
 }
-point_count = 8
+point_count = 6
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_h2yge")
@@ -108,7 +108,7 @@ title = "Options (Paused)"
 [node name="Background" type="Node2D" parent="."]
 
 [node name="BackgroundSprite" type="Sprite2D" parent="Background"]
-texture = ExtResource("4_1v22p")
+texture = ExtResource("4_msjn6")
 centered = false
 
 [node name="WaveSpawner" type="Node2D" parent="."]
@@ -128,7 +128,7 @@ y_sort_enabled = true
 
 [node name="Tower" parent="." instance=ExtResource("5_2runn")]
 unique_name_in_owner = true
-position = Vector2(472, 281)
+position = Vector2(310, 170)
 
 [node name="Spells" type="Node2D" parent="."]
 

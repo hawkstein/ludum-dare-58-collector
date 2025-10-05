@@ -7,7 +7,7 @@ signal attacked_tower(attack_strength:float)
 @onready var health_color_rect: ColorRect = $HealthColorRect
 
 
-var tower_position: Vector2 = Vector2(472, 281) # Hardcoded tower position
+var tower_position: Vector2 = Vector2(310, 170) # Hardcoded tower position
 var speed: float = 30.0
 var target_distance:float = 30.0
 var is_moving: bool = true
