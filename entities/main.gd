@@ -15,9 +15,13 @@ const MANA = preload("uid://vrd8l0abflp6")
 @onready var mana_count: Label = %ManaCount
 
 var fire_mana: int = 0;
+var water_mana: int = 0;
+var earth_mana: int = 0;
+var air_mana: int = 0;
 
 func _init() -> void:
-	var frostbolt = UpgradePath.create_frostbolt()
+	#var frostbolt = UpgradePath.create_frostbolt()
+	pass
 
 
 func _ready() -> void:
@@ -55,6 +59,9 @@ func reset() -> void:
 	collector.reset()
 	
 	fire_mana = 0
+	water_mana = 0
+	earth_mana = 0
+	air_mana = 0
 	_update_mana_count()
 
 
@@ -134,9 +141,17 @@ func _pickup_mana(mana_drop:Mana) -> void:
 	tween.tween_property(mana_drop, "global_position", cast_position, duration)
 	tween.tween_callback(mana_drop.queue_free)
 	
-	fire_mana +=1
+	match mana_drop.mana_type:
+		Mana.Type.FIRE:
+			fire_mana += 1
+		Mana.Type.WATER:
+			water_mana += 1
+		Mana.Type.EARTH:
+			earth_mana += 1
+		Mana.Type.AIR:
+			air_mana += 1
 	_update_mana_count()
 
 
 func _update_mana_count() -> void:
-	mana_count.text = "Mana: {0} {1} {2} {3}".format([str(fire_mana) ,"x", "x", "x"])
+	mana_count.text = "Mana: {0} {1} {2} {3}".format([str(fire_mana) ,str(water_mana), str(earth_mana), str(air_mana)])

@@ -136,6 +136,8 @@ scale = Vector2(1, 0.9983467)
 [node name="Mana" type="Node2D" parent="."]
 
 [node name="Collector" parent="." instance=ExtResource("7_msjn6")]
+position = Vector2(309, 65)
+scale = Vector2(0.9537539, 1)
 
 [connection signal="pressed" from="UI/Layout/MarginContainer/VBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
 [connection signal="timeout" from="WaveSpawner/SpawnTimer" to="WaveSpawner" method="_on_spawn_timer_timeout"]
