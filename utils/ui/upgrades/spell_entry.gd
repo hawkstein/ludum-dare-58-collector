@@ -20,3 +20,8 @@ func add_attribute(attr_name:StringName, values:Array[Dictionary]) -> void:
 		assert(cost is Array)
 		assert(cost.size() == 4, "cost array must only have 4 values")
 	attributes.set(attr_name, values)
+
+func print_attributes() -> void:
+	for value in attributes:
+		print(value, "\n")
+		print(attributes[value])
