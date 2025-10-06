@@ -47,14 +47,15 @@ func _clear_spell_tab() -> void:
 
 
 func _create_spell_tab(spell:StringName) -> void:
-	var spell_entry: SpellEntry = UpgradePath.get(spell)
 	if progress.spells[spell].unlocked:
-		_create_unlocked_spell_tab(spell_entry)
+		_create_unlocked_spell_tab(spell)
 	else:
+		var spell_entry: SpellEntry = UpgradePath.get(spell)
 		_create_locked_spell_tab(spell_entry)
 
 
-func _create_unlocked_spell_tab(spell_entry:SpellEntry) -> void:
+func _create_unlocked_spell_tab(spell:StringName) -> void:
+	var spell_entry: SpellEntry = UpgradePath.get(spell)
 	var attr_keys = spell_entry.attributes.keys()
 	for key in attr_keys:
 		var h_box:HBoxContainer = HBoxContainer.new()
@@ -62,38 +63,69 @@ func _create_unlocked_spell_tab(spell_entry:SpellEntry) -> void:
 		l.text = key
 		h_box.add_child(l)
 		var upgrade_button:Button = Button.new()
-		var attr_level = progress.spells.fireball[key]
-		var next_level = attr_level + 1
-		var has_next_level = spell_entry.attributes[key].size() >= next_level
-		if has_next_level:
-			upgrade_button.text = "Buy Level {0}".format([next_level])
-			upgrade_button.pressed.connect(_purchase_spell_upgrade.bind("fireball", key, next_level, upgrade_button), ConnectFlags.CONNECT_ONE_SHOT)
-		else:
-			upgrade_button.text = "Complete"
-			upgrade_button.disabled = true
 		h_box.add_child(upgrade_button)
-		if has_next_level:
-			var cost: Label = Label.new()
-			var attribute = spell_entry.attributes[key]
-			cost.text = "{0} {1} {2} {3}".format(attribute[0].cost)
-			h_box.add_child(cost)
+		var cost_label: Label = Label.new()
+		upgrade_button.pressed.connect(_purchase_spell_upgrade.bind(spell, key, upgrade_button, cost_label))
+		h_box.add_child(cost_label)
+		_update_button_and_label(spell, key, upgrade_button, cost_label)
 		spell_v_box.add_child(h_box)
 
 
-func _purchase_spell_upgrade(spell:StringName, attribute:String, level:int, upgrade_button) -> void:
-	print("purchase level {0} {1} for {2}".format([str(level), attribute, spell]))
-	progress.spells[spell][attribute] = level
-	progress.update(progress.spells, "spells")
-	var attr_level = progress.spells.get(spell)[attribute]
+func _update_button_and_label(spell:StringName, key:String, upgrade_button:Button, cost_label:Label) -> void:
 	var spell_entry: SpellEntry = UpgradePath.get(spell)
+	var attr_level = progress.spells.get(spell)[key]
 	var next_level = attr_level + 1
-	var has_next_level = spell_entry.attributes[attribute].size() >= next_level
+	var has_next_level = spell_entry.attributes[key].size() >= next_level
+	
 	if has_next_level:
 		upgrade_button.text = "Buy Level {0}".format([next_level])
-		upgrade_button.pressed.connect(_purchase_spell_upgrade.bind(spell, attribute, next_level, upgrade_button), ConnectFlags.CONNECT_ONE_SHOT)
 	else:
 		upgrade_button.text = "Complete"
 		upgrade_button.disabled = true
+		
+	if has_next_level:
+		var attribute = spell_entry.attributes[key]
+		cost_label.text = "{0} {1} {2} {3}".format(attribute[next_level - 1].cost)
+	else:
+		cost_label.text = ""
+
+
+func _purchase_spell_upgrade(spell:StringName, attribute:String, upgrade_button:Button, cost_label:Label) -> void:
+	# TODO: check if player can afford purchase
+	var spell_entry: SpellEntry = UpgradePath.get(spell)
+	var next_idx = progress.spells.get(spell)[attribute]
+	var cost = spell_entry.attributes.get(attribute)[next_idx].cost
+	var can_afford = _check_cost(cost)
+	if can_afford:
+		_pay_cost(cost)
+		var next_level = next_idx + 1
+		print("purchase level {0} {1} for {2}".format([str(next_level), attribute, spell]))
+		progress.spells[spell][attribute] = next_level
+		progress.update(progress.spells, "spells")
+		_update_button_and_label(spell, attribute, upgrade_button, cost_label)
+
+
+func _check_cost(cost:Array) -> bool:
+	assert(cost.size() == 4)
+	return (progress.fire_crystals >= cost[0] and 
+			progress.water_crystals >= cost[1] and 
+			progress.earth_crystals >= cost[2] and 
+			progress.air_crystals >= cost[3])
+
+
+func _pay_cost(cost:Array) -> void:
+	assert(cost.size() == 4)
+	progress.update_by(-cost[0], "fire_crystals")
+	progress.update_by(cost[0], "spent_fire_crystals")
+	
+	progress.update_by(-cost[1], "water_crystals")
+	progress.update_by(cost[1], "spent_water_crystals")
+	
+	progress.update_by(-cost[2], "earth_crystals")
+	progress.update_by(cost[2], "spent_earth_crystals")
+	
+	progress.update_by(-cost[3], "air_crystals")
+	progress.update_by(cost[3], "spent_air_crystals")
 
 
 func _create_locked_spell_tab(spell_entry:SpellEntry) -> void:

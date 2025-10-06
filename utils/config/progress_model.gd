@@ -6,7 +6,13 @@ var water_crystals := 0
 var earth_crystals := 0
 var air_crystals := 0
 
+var spent_fire_crystals := 0
+var spent_water_crystals := 0
+var spent_earth_crystals := 0
+var spent_air_crystals := 0
+
 var loop_count := 0
+var max_wave : = 1
 
 var spells := {
 	"fireball": {

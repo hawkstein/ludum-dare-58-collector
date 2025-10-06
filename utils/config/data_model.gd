@@ -35,6 +35,11 @@ func update(value:Variant, property_name:StringName) -> void:
 	set(property_name, value)
 	property_updated.emit(property_name)
 
+func update_by(value:Variant, property_name:StringName) -> void:
+	#print("DataModel: Update {0} by {1}".format([property_name, value]))
+	set(property_name, get(property_name) + value)
+	property_updated.emit(property_name)
+
 
 class PropertyMeta:
 	var label:String
