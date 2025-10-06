@@ -14,7 +14,7 @@ signal waves_completed
 var enemy_spawns:int
 var wave:int
 
-var max_waves: int = 18
+var max_waves: int = 9
 
 func _ready() -> void:
 	reset()

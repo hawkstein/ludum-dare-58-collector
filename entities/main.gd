@@ -94,6 +94,7 @@ func reset() -> void:
 	tower.reset()
 	wave_spawner.reset()
 	wave_spawner.spawn_wave()
+	check_wave_defeated = false
 	
 	var speed_idx = progress.collector_levels.speed - 1
 	collector.speed = UpgradePath.collector.attributes.get("speed")[speed_idx].value
@@ -199,6 +200,7 @@ func _damage_target(target:Enemy, amount:float) -> void:
 		if check_wave_defeated:
 			await get_tree().process_frame
 			if get_tree().get_nodes_in_group("enemies").is_empty():
+				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 				ScreenChanger.change_to("game_end")
 
 
