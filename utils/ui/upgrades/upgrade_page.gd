@@ -52,8 +52,7 @@ func _create_spell_tab(spell:StringName) -> void:
 	if progress.spells[spell].unlocked:
 		_create_unlocked_spell_tab(spell)
 	else:
-		var spell_entry: SpellEntry = UpgradePath.get(spell)
-		_create_locked_spell_tab(spell_entry)
+		_create_locked_spell_tab(spell)
 
 
 func _create_unlocked_spell_tab(spell:StringName) -> void:
@@ -140,12 +139,29 @@ func update_crystals_label() -> void:
 	])
 
 
-func _create_locked_spell_tab(spell_entry:SpellEntry) -> void:
+func _create_locked_spell_tab(spell:StringName) -> void:
+	var spell_entry: SpellEntry = UpgradePath.get(spell)
 	var h_box:HBoxContainer = HBoxContainer.new()
 	var unlock_button:Button = Button.new()
 	unlock_button.text = "Unlock {0}".format([spell_entry.spell_name])
+	unlock_button.pressed.connect(_on_unlock_spell_pressed.bind(spell))
 	h_box.add_child(unlock_button)
+	var cost_label: Label = Label.new()
+	cost_label.text = "Cost: {0} {1} {2} {3}".format(spell_entry.unlock_cost)
+	h_box.add_child(cost_label)
 	spell_v_box.add_child(h_box)
+
+
+func _on_unlock_spell_pressed(spell:StringName) -> void:
+	var spell_entry: SpellEntry = UpgradePath.get(spell)
+	var can_afford = _check_cost(spell_entry.unlock_cost)
+	if can_afford:
+		_pay_cost(spell_entry.unlock_cost)
+		progress.spells.get(spell).unlocked = true
+		progress.update(progress.spells, "spells")
+		_clear_spell_tab()
+		_create_spell_tab(spell)
+
 
 
 func _create_collector_tab() -> void:
@@ -170,7 +186,7 @@ func _create_collector_tab() -> void:
 		if has_next_level:
 			var cost: Label = Label.new()
 			var attribute = collector_entry.attributes[key]
-			cost.text = "{0} {1} {2} {3}".format(attribute[0].cost)
+			cost.text = "Cost: {0} {1} {2} {3}".format(attribute[0].cost)
 			h_box.add_child(cost)
 		collector_v_box.add_child(h_box)
 
