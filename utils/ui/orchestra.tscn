@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://c85x7rjgf3a0a"]
+
+[ext_resource type="Script" uid="uid://bliypingvas4y" path="res://utils/ui/orchestra.gd" id="1_qxflk"]
+[ext_resource type="AudioStream" uid="uid://dd36bnw3xl03k" path="res://utils/ui/crystal_pickup.wav" id="2_hv7wd"]
+
+[node name="Orchestra" type="Node2D"]
+script = ExtResource("1_qxflk")
+
+[node name="CrystalPickupPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_hv7wd")
+bus = &"SFX"

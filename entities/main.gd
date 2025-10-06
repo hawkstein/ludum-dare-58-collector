@@ -260,6 +260,7 @@ func _check_drops() -> void:
 
 func _get_crystal(mana_types:Array[Mana.Type]) -> void:
 	var chosen = mana_types.pick_random()
+	Orchestra.queue_crystal_pickup_sound()
 	match chosen:
 		Mana.Type.FIRE:
 			fire_crystals += conversation_rate
