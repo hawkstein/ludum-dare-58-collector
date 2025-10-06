@@ -88,6 +88,8 @@ func _on_tower_tower_destroyed() -> void:
 
 
 func reset() -> void:
+	progress = DataStore.get_model("Progress")
+	
 	ui.hide()
 	hud.show()
 	get_tree().paused = false
@@ -110,7 +112,7 @@ func _on_reset_button_pressed() -> void:
 
 
 func _on_tower_cast_spell(spell: String) -> void:
-	print("casting ", spell, "...")
+	#print("casting ", spell, "...")
 	var target
 	match spell:
 		"fireball":

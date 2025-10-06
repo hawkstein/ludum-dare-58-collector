@@ -2,6 +2,7 @@ extends Control
 
 @onready var grimoire_v_box: VBoxContainer = %GrimoireVBox
 @onready var collector_v_box: VBoxContainer = %CollectorVBox
+@onready var collector_entries: VBoxContainer = %CollectorVBox/VBoxContainer
 @onready var tower_v_box: VBoxContainer = %TowerVBox
 @onready var spell_v_box: VBoxContainer = %SpellVBox
 @onready var upgrade_tabs:Array[VBoxContainer] = [
@@ -10,6 +11,8 @@ extends Control
 	tower_v_box,
 ]
 @onready var crystals_label: Label = %CrystalsLabel
+@onready var tab_bar: TabBar = $VBoxContainer/TabBar
+@onready var spells_tab_bar: TabBar = $VBoxContainer/Tabs/GrimoireVBox/SpellsTabBar
 
 
 var progress: ProgressData = DataStore.get_model("Progress")
@@ -86,7 +89,7 @@ func _update_button_and_label(spell:StringName, key:String, upgrade_button:Butto
 		
 	if has_next_level:
 		var attribute = spell_entry.attributes[key]
-		cost_label.text = "{0} {1} {2} {3}".format(attribute[next_level - 1].cost)
+		cost_label.text = "Cost: {0} {1} {2} {3}".format(attribute[next_level - 1].cost)
 	else:
 		cost_label.text = ""
 
@@ -131,7 +134,7 @@ func _pay_cost(cost:Array) -> void:
 
 
 func update_crystals_label() -> void:
-	crystals_label.text = "F:{0} - W:{1} - E:{2} - A:{3}".format([
+	crystals_label.text = "Crystals\nFire:{0} Water:{1} Earth:{2} Air:{3}".format([
 		progress.fire_crystals,
 		progress.water_crystals,
 		progress.earth_crystals,
@@ -163,8 +166,14 @@ func _on_unlock_spell_pressed(spell:StringName) -> void:
 		_create_spell_tab(spell)
 
 
+func _clear_collector_tab() -> void:
+	var children = collector_entries.get_children()
+	for child in children:
+		child.queue_free()
+	await get_tree().process_frame
 
 func _create_collector_tab() -> void:
+	_clear_collector_tab()
 	var collector_entry = UpgradePath.collector
 	var attr_keys = collector_entry.attributes.keys()
 	for key in attr_keys:
@@ -173,39 +182,84 @@ func _create_collector_tab() -> void:
 		l.text = key
 		h_box.add_child(l)
 		var upgrade_button:Button = Button.new()
-		var attr_level = progress.collector_levels[key]
-		var next_level = attr_level + 1
-		var has_next_level = collector_entry.attributes[key].size() >= next_level
-		if has_next_level:
-			upgrade_button.text = "Buy Level {0}".format([next_level])
-			upgrade_button.pressed.connect(_purchase_collector_upgrade.bind(key, next_level, upgrade_button), ConnectFlags.CONNECT_ONE_SHOT)
-		else:
-			upgrade_button.text = "Complete"
-			upgrade_button.disabled = true
+		var cost_label: Label = Label.new()
+		upgrade_button.pressed.connect(_purchase_collector_upgrade.bind(key, upgrade_button, cost_label))
 		h_box.add_child(upgrade_button)
-		if has_next_level:
-			var cost: Label = Label.new()
-			var attribute = collector_entry.attributes[key]
-			cost.text = "Cost: {0} {1} {2} {3}".format(attribute[0].cost)
-			h_box.add_child(cost)
-		collector_v_box.add_child(h_box)
+		h_box.add_child(cost_label)
+		_update_collector_button_and_label(key, upgrade_button, cost_label)
+		collector_entries.add_child(h_box)
 
 
-func _purchase_collector_upgrade(attribute:String, level:int, upgrade_button) -> void:
-	print("purchase level {0} {1} for collector".format([str(level), attribute]))
-	progress.collector_levels[attribute] = level
-	progress.update(progress.collector_levels, "collector_levels")
-	var attr_level = progress.collector_levels[attribute]
-	var spell_entry: SpellEntry = UpgradePath.collector
+func _update_collector_button_and_label(key:String, upgrade_button:Button, cost_label:Label) -> void:
+	var spell_entry: SpellEntry = UpgradePath.get("collector")
+	var attr_level = progress.collector_levels[key]
 	var next_level = attr_level + 1
-	var has_next_level = spell_entry.attributes[attribute].size() >= next_level
+	var has_next_level = spell_entry.attributes[key].size() >= next_level
+	
 	if has_next_level:
 		upgrade_button.text = "Buy Level {0}".format([next_level])
-		upgrade_button.pressed.connect(_purchase_collector_upgrade.bind(attribute, next_level, upgrade_button), ConnectFlags.CONNECT_ONE_SHOT)
 	else:
 		upgrade_button.text = "Complete"
 		upgrade_button.disabled = true
+		
+	if has_next_level:
+		var attribute = spell_entry.attributes[key]
+		cost_label.text = "Cost: {0} {1} {2} {3}".format(attribute[next_level - 1].cost)
+	else:
+		cost_label.text = ""
+
+
+
+func _purchase_collector_upgrade(attribute:String, upgrade_button:Button, cost_label:Label) -> void:
+	#print("purchase level {0} {1} for collector".format([str(level), attribute]))
+	#progress.collector_levels[attribute] = level
+	#progress.update(progress.collector_levels, "collector_levels")
+	#var attr_level = progress.collector_levels[attribute]
+	#var spell_entry: SpellEntry = UpgradePath.collector
+	#var next_level = attr_level + 1
+	#var has_next_level = spell_entry.attributes[attribute].size() >= next_level
+	#if has_next_level:
+		#upgrade_button.text = "Buy Level {0}".format([next_level])
+		#upgrade_button.pressed.connect(_purchase_collector_upgrade.bind(attribute, next_level, upgrade_button), ConnectFlags.CONNECT_ONE_SHOT)
+	#else:
+		#upgrade_button.text = "Complete"
+		#upgrade_button.disabled = true
+	var spell_entry: SpellEntry = UpgradePath.get("collector")
+	var next_idx = progress.collector_levels[attribute]
+	var cost = spell_entry.attributes.get(attribute)[next_idx].cost
+	var can_afford = _check_cost(cost)
+	if can_afford:
+		_pay_cost(cost)
+		var next_level = next_idx + 1
+		print("purchase level {0} {1} for collector".format([str(next_level), attribute]))
+		progress.collector_levels[attribute] = next_level
+		progress.update(progress.collector_levels, "collector_levels")
+		_update_collector_button_and_label(attribute, upgrade_button, cost_label)
 
 
 func _create_tower_tab() -> void:
 	pass
+
+
+func _on_refund_button_pressed() -> void:
+	var current_progress:ProgressData = DataStore.get_model("Progress")
+	var reset_progress = ProgressData.new()
+	
+	reset_progress.loop_count = current_progress.loop_count
+	reset_progress.max_wave = current_progress.max_wave
+	reset_progress.fire_crystals = current_progress.spent_fire_crystals + current_progress.fire_crystals
+	reset_progress.water_crystals = current_progress.spent_water_crystals + current_progress.water_crystals
+	reset_progress.earth_crystals = current_progress.spent_earth_crystals + current_progress.earth_crystals
+	reset_progress.air_crystals = current_progress.spent_air_crystals + current_progress.air_crystals
+	
+	DataStore.data.set("Progress", reset_progress)
+	DataStore.save_data("Progress")
+	progress = DataStore.get_model("Progress")
+	
+	if tab_bar.current_tab == 0:
+		print("on spells tab...")
+		print(spells_tab_bar.current_tab)
+		_on_spells_tab_bar_tab_changed(spells_tab_bar.current_tab)
+	_create_collector_tab()
+	update_crystals_label()
+	#_create_tower_tab()

@@ -61,6 +61,7 @@ theme_override_constants/margin_bottom = 20
 
 [node name="LoopPage" type="Control" parent="UI/Layout/MarginContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/Layout/MarginContainer/LoopPage"]
@@ -116,7 +117,6 @@ text = "Purchase upgrades"
 
 [node name="UpgradePage" type="Control" parent="UI/Layout/MarginContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 script = ExtResource("5_r5g43")
 
@@ -138,6 +138,7 @@ size_flags_vertical = 3
 
 [node name="GrimoireVBox" type="VBoxContainer" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/Tabs"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -165,14 +166,16 @@ theme_override_constants/separation = 10
 
 [node name="CollectorVBox" type="VBoxContainer" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/Tabs"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Label" type="Label" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/Tabs/CollectorVBox"]
 layout_mode = 2
-text = "Collector bits go Here"
+text = "Upgrade the mana collector you control"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/Tabs/CollectorVBox"]
+layout_mode = 2
 
 [node name="TowerVBox" type="VBoxContainer" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/Tabs"]
 unique_name_in_owner = true
@@ -195,6 +198,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 text = "F:5 - W:5 - E:5 - A:5"
+horizontal_alignment = 1
 
 [node name="ResetButton" type="Button" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -409,6 +413,7 @@ scale = Vector2(0.9537539, 1)
 [connection signal="tab_changed" from="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/TabBar" to="UI/Layout/MarginContainer/UpgradePage" method="_on_tab_bar_tab_changed"]
 [connection signal="tab_changed" from="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/Tabs/GrimoireVBox/SpellsTabBar" to="UI/Layout/MarginContainer/UpgradePage" method="_on_spells_tab_bar_tab_changed"]
 [connection signal="pressed" from="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/HBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
+[connection signal="pressed" from="UI/Layout/MarginContainer/UpgradePage/VBoxContainer/HBoxContainer/RefundButton" to="UI/Layout/MarginContainer/UpgradePage" method="_on_refund_button_pressed"]
 [connection signal="timeout" from="WaveSpawner/SpawnTimer" to="WaveSpawner" method="_on_spawn_timer_timeout"]
 [connection signal="cast_spell" from="Tower" to="." method="_on_tower_cast_spell"]
 [connection signal="tower_destroyed" from="Tower" to="." method="_on_tower_tower_destroyed"]

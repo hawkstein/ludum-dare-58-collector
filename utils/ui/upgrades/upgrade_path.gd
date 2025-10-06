@@ -107,7 +107,7 @@ func create_collector() -> SpellEntry:
 		{ "value": 160.0, "cost": [1,1,1,1] },
 		{ "value": 280.0, "cost": [2,2,2,2] },
 		{ "value": 400.0, "cost": [3,3,3,3] },
-		{ "value": 500.0, "cost": [4,4,4,4] },
+		{ "value": 500.0, "cost": [8,8,8,8] },
 	]
 	collector_entry.add_attribute("speed", speed_values)
 	
