@@ -56,6 +56,8 @@ func _update_collector_ratio() -> void:
 
 
 func _on_tower_tower_destroyed() -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	
 	ui.show()
 	
 	var loop_count = progress.loop_count + 1
