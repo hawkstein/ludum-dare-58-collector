@@ -128,10 +128,9 @@ offset_bottom = 300.0
 [node name="TabBar" type="TabBar" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer"]
 layout_mode = 2
 current_tab = 0
-tab_count = 3
+tab_count = 2
 tab_0/title = "Grimoire"
 tab_1/title = "Collector"
-tab_2/title = "Tower"
 
 [node name="Tabs" type="Control" parent="UI/Layout/MarginContainer/UpgradePage/VBoxContainer"]
 layout_mode = 2

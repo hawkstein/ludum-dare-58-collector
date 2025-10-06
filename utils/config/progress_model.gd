@@ -22,22 +22,22 @@ var spells := {
 		"burn": 1,
 	},
 	"frostbolt": {
-		"unlocked": true,
+		"unlocked": false,
 		"damage": 1,
 		"rate": 1,
 		"slow": 1,
 	},
 	"rockblast": {
 		"unlocked": false,
-		"damage": 0,
-		"rate": 0,
-		"area": 0,
+		"damage": 1,
+		"rate": 1,
+		"area": 1,
 	},
 	"tornado": {
 		"unlocked": false,
-		"damage": 0,
-		"rate": 0,
-		"duration": 0,
+		"damage": 1,
+		"rate": 1,
+		"duration": 1,
 	}
 }
 
