@@ -24,12 +24,14 @@ func from_dict(dict: Dictionary):
 				set(p.name, typed_array)
 			elif p.type == Variant.Type.TYPE_INT:
 				set(p.name, int(dict[p.name]))
+			elif p.type == Variant.Type.TYPE_DICTIONARY:
+				self[p.name].assign(dict[p.name])
 			else:
 				set(p.name, dict[p.name])
 
 
 func update(value:Variant, property_name:StringName) -> void:
-	#print("Update {0} to {1}".format([property_name, value]))
+	#print("DataModel: Update {0} to {1}".format([property_name, value]))
 	set(property_name, value)
 	property_updated.emit(property_name)
 

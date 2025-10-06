@@ -132,6 +132,7 @@ func _create_collector_tab() -> void:
 
 
 func _purchase_collector_upgrade(attribute:String, level:int, upgrade_button) -> void:
+	print("purchase level {0} {1} for collector".format([str(level), attribute]))
 	progress.collector_levels[attribute] = level
 	progress.update(progress.collector_levels, "collector_levels")
 	var attr_level = progress.collector_levels[attribute]

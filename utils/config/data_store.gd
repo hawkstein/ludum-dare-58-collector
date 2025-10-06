@@ -78,7 +78,6 @@ func _load_model(key:StringName) -> void:
 	if error:
 		printerr(json.get_error_message(), " in ", json_string, " at line ", json.get_error_line())
 		return
-	
 	data[key].from_dict(json.data)
 
 
@@ -92,3 +91,4 @@ func reset_progress() -> void:
 			printerr("Failed to delete file: ", error)
 	else:
 		print("File doesn't exist")
+	data.set("Progress", ProgressData.new())

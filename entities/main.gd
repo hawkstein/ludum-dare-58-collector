@@ -35,6 +35,8 @@ func _ready() -> void:
 	_update_mana_count()
 	_update_crystals_from_progress()
 	_update_collector_ratio()
+	var speed_idx = progress.collector_levels.speed - 1
+	collector.speed = UpgradePath.collector.attributes.get("speed")[speed_idx].value
 
 
 func _update_collector_ratio() -> void:
@@ -84,7 +86,9 @@ func reset() -> void:
 	tower.reset()
 	wave_spawner.reset()
 	wave_spawner.spawn_wave()
-	collector.reset()
+	
+	var speed_idx = progress.collector_levels.speed - 1
+	collector.speed = UpgradePath.collector.attributes.get("speed")[speed_idx].value
 	
 	_reset_drops()
 	_update_mana_count()
@@ -125,9 +129,7 @@ func _fire_at_moving_target(target:Enemy) -> void:
 
 func _get_spell_attribute(spell:StringName, attribute:String) -> Variant:
 	var level = progress.spells.get(spell)[attribute]
-	print(level)
 	var upgrades = UpgradePath.get(spell).attributes[attribute]
-	print(upgrades)
 	return upgrades[level - 1].value
 
 
@@ -220,7 +222,6 @@ func _check_drops() -> void:
 
 func _get_crystal(mana_types:Array[Mana.Type]) -> void:
 	var chosen = mana_types.pick_random()
-	print("add ", Mana.type_to_string(chosen), " crystal")
 	match chosen:
 		Mana.Type.FIRE:
 			fire_crystals += conversation_rate

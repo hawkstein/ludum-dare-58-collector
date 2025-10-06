@@ -37,8 +37,11 @@ var spells := {
 
 var collector_levels: Dictionary[StringName, int] = {
 	"speed": 1,
-	"size": 1,
 	"ratio": 1,
+	"fire_filter": 0,
+	"water_filter": 0,
+	"earth_filter": 0,
+	"air_filter": 0,
 }
 
 var tower_levels: Dictionary[StringName, int] = {
@@ -48,7 +51,6 @@ var tower_levels: Dictionary[StringName, int] = {
 
 func from_dict(dict: Dictionary):
 	super.from_dict(dict)
-	
 	for key in spells.keys():
 		var spell:Dictionary = spells[key]
 		for attr_key in spell.keys():

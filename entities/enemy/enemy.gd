@@ -8,12 +8,12 @@ signal attacked_tower(attack_strength:float)
 
 
 var tower_position: Vector2 = Vector2(310, 170) # Hardcoded tower position
-var speed: float = 30.0
+var speed: float = 50.0
 var target_distance:float = 30.0
 var is_moving: bool = true
 var is_attacking: bool = false
 var max_health:float = 100.0
-var health:float = 100.0:
+var health:float = 80.0:
 	set(p_health):
 		health = p_health
 		var health_scale = health / max_health

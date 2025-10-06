@@ -134,14 +134,6 @@ func create_tornado() -> SpellEntry:
 func create_collector() -> SpellEntry:
 	var collector_entry = SpellEntry.new("Collector")
 	
-	var size_values:Array[Dictionary] = [
-		{ "value": "S", "cost": [0,0,0,0] },
-		{ "value": "M", "cost": [2,0,0,0] },
-		{ "value": "L", "cost": [3,0,0,0] },
-		{ "value": "XL", "cost": [4,0,0,0] },
-	]
-	collector_entry.add_attribute("size", size_values)
-	
 	var ratio_values:Array[Dictionary] = [
 		{ "value": "1/5", "cost": [0,0,0,0] },
 		{ "value": "3/10", "cost": [2,2,2,2] },
@@ -151,11 +143,31 @@ func create_collector() -> SpellEntry:
 	collector_entry.add_attribute("ratio", ratio_values)
 	
 	var speed_values:Array[Dictionary] = [
-		{ "value": 20, "cost": [0,0,0,0] },
-		{ "value": 30, "cost": [2,2,2,2] },
-		{ "value": 40, "cost": [6,6,6,6] },
-		{ "value": 60, "cost": [20,20,20,20] },
+		{ "value": 70.0, "cost": [0,0,0,0] },
+		{ "value": 160.0, "cost": [2,2,2,2] },
+		{ "value": 280.0, "cost": [6,6,6,6] },
+		{ "value": 400.0, "cost": [20,20,20,20] },
+		{ "value": 500.0, "cost": [20,20,20,20] },
 	]
 	collector_entry.add_attribute("speed", speed_values)
 	
+	var fire_filters:Array[Dictionary] = _create_filters([0,1,0,0])
+	collector_entry.add_attribute("fire_filter", fire_filters)
+	
+	var water_filters:Array[Dictionary] = _create_filters([1,0,0,0])
+	collector_entry.add_attribute("water_filter", water_filters)
+	
+	var earth_filters:Array[Dictionary] = _create_filters([0,0,0,1])
+	collector_entry.add_attribute("earth_filter", earth_filters)
+	
+	var air_filters:Array[Dictionary] = _create_filters([0,0,1,0])
+	collector_entry.add_attribute("air_filter", air_filters)
+	
 	return collector_entry
+
+
+func _create_filters(cost:Array[int]) -> Array[Dictionary]:
+	var filters:Array[Dictionary] = []
+	for i in range(1, 5):
+		filters.append( { "value": 20 * i, "cost":  cost.map(func(x): return x * i * 2) } )
+	return filters

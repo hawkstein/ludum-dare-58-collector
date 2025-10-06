@@ -1,15 +1,8 @@
 extends CharacterBody2D
 
-const MAX_SPEED := 300
 const ACCELERATION := 10.0
 
-func _ready() -> void:
-	reset()
-
-
-func reset() -> void:
-	position = get_viewport().get_mouse_position()
-
+var speed: float = 300.0
 
 func _physics_process(delta: float) -> void:
 	var direction = get_viewport().get_mouse_position() - position
@@ -19,6 +12,6 @@ func _physics_process(delta: float) -> void:
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		direction = direction.normalized()
-		velocity =  lerp(velocity, direction * MAX_SPEED, delta * ACCELERATION)
+		velocity =  lerp(velocity, direction * speed, delta * ACCELERATION)
 		
 	move_and_slide()
