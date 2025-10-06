@@ -30,6 +30,8 @@ var water_crystals: int = 0
 var earth_crystals: int = 0
 var air_crystals: int = 0
 
+var check_wave_defeated := false
+
 
 func _ready() -> void:
 	ui.hide()
@@ -39,7 +41,11 @@ func _ready() -> void:
 	_update_collector_ratio()
 	var speed_idx = progress.collector_levels.speed - 1
 	collector.speed = UpgradePath.collector.attributes.get("speed")[speed_idx].value
+	wave_spawner.waves_completed.connect(_on_wave_spawner_waves_completed)
 
+
+func _on_wave_spawner_waves_completed() -> void:
+	check_wave_defeated = true
 
 func _update_collector_ratio() -> void:
 	var ratio_level = progress.collector_levels.ratio
@@ -190,6 +196,10 @@ func _damage_target(target:Enemy, amount:float) -> void:
 	if target.health <= 0:
 		_spawn_mana(target.global_position)
 		target.queue_free()
+		if check_wave_defeated:
+			await get_tree().process_frame
+			if get_tree().get_nodes_in_group("enemies").is_empty():
+				ScreenChanger.change_to("game_end")
 
 
 func _spawn_mana(mana_position:Vector2) -> void:

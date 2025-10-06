@@ -2,6 +2,8 @@ extends Node2D
 
 const ENEMY = preload("uid://dl3c43g803ldy")
 
+signal waves_completed
+
 @onready var spawn_path: Path2D = %SpawnPath
 @onready var spawn_length = spawn_path.curve.get_baked_length()
 @onready var enemies: Node2D = %Enemies
@@ -26,13 +28,16 @@ func reset() -> void:
 
 func spawn_wave() -> void:
 	wave += 1
-	waves_label.text = "Wave {0} of {1}".format([wave, max_waves])
-	var wave_health = 70.0 + (wave * wave * 5.0)
-	#print("wave health ", wave_health)
-	for i in range(enemy_spawns):
-		spawn_enemy(ENEMY, get_random_position(), wave_health)
-	enemy_spawns += 2
-	spawn_timer.start()
+	if wave <= max_waves:
+		waves_label.text = "Wave {0} of {1}".format([wave, max_waves])
+		var wave_health = 70.0 + (wave * wave * 5.0)
+		#print("wave health ", wave_health)
+		for i in range(enemy_spawns):
+			spawn_enemy(ENEMY, get_random_position(), wave_health)
+		enemy_spawns += 2
+		spawn_timer.start()
+	else:
+		waves_completed.emit()
 
 
 func spawn_enemy(enemy_scene: PackedScene, pos: Vector2, health:float) -> void:
