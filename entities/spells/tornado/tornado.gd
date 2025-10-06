@@ -1,13 +1,14 @@
-class_name Rockblast
+class_name Tornado
 extends Area2D
 
-var speed:float = 50.0
+var speed:float = 300.0
 var velocity:Vector2 = Vector2.ZERO
 
 signal hit_enemy(enemy:Enemy)
 
 func _ready():
-	get_tree().create_timer(10.0).timeout.connect(queue_free)
+	#get_tree().create_timer(10.0).timeout.connect(queue_free)
+	pass
 
 func _physics_process(delta: float) -> void:
 	position += velocity * delta
