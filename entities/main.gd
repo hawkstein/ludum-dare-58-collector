@@ -2,8 +2,11 @@ extends Node2D
 
 const FIREBALL = preload("uid://6a3l6orrerda")
 const FROSTBOLT = preload("uid://yslthdu0xon2")
+const ROCKBLAST = preload("uid://1ehjmqtxvdyg")
+const TORNADO = preload("uid://cpjl8xr3q0hrt")
 
 const MANA = preload("uid://vrd8l0abflp6")
+const DUST = preload("uid://cid6dfjgxdq0s")
 
 @onready var pause_window: Control = %PauseWindow
 @onready var ui: MainUserInterface = $UI
@@ -123,12 +126,14 @@ func _on_tower_cast_spell(spell: String) -> void:
 			target = _pick_random_target()
 			if target:
 				_fire_frostbolt_at(target)
-			pass
 		"rockblast":
 			target = _pick_random_target()
-			pass
+			if target:
+				_fire_rock_at(target)
 		"tornado":
 			target = _pick_random_target()
+			if target:
+				_fire_whirlwind_at(target)
 			pass
 
 
@@ -141,12 +146,74 @@ func _fire_frostbolt_at(target:Enemy) -> void:
 	frostbolt_spell.hit_enemy.connect(_frostbolt_damage, ConnectFlags.CONNECT_ONE_SHOT)
 
 
+func _fire_rock_at(target:Enemy) -> void:
+	var rock_spell:Rockblast = ROCKBLAST.instantiate()
+	var cast_position = tower.get_cast_global_position()
+	rock_spell.global_position = cast_position
+	spells.add_child(rock_spell)
+	rock_spell.aim_at_target(target.global_position)
+	rock_spell.hit_enemies.connect(_rock_damage, ConnectFlags.CONNECT_ONE_SHOT)
+
+func _fire_whirlwind_at(target:Enemy) -> void:
+	var tornado_spell:Tornado = TORNADO.instantiate()
+	var cast_position = tower.get_cast_global_position()
+	tornado_spell.global_position = cast_position
+	spells.add_child(tornado_spell)
+	var duration:float = _get_spell_attribute("tornado", "duration")
+	tornado_spell.aim_at_target(target.global_position, duration)
+	tornado_spell.hit_enemy.connect(_tornado_damage)
+
+
+
+func _rock_damage(enemies_hit:Array[Enemy], rock_position:Vector2) -> void:
+	print("hit {0} enemies".format([enemies_hit.size()]))
+	var rock_damage:float = _get_spell_attribute("rockblast", "damage")
+	for enemy in enemies_hit:
+		_damage_target(enemy, rock_damage)
+	_create_rock_impact(rock_position)
+
+func _create_rock_impact(rock_position:Vector2):
+	var particles = CPUParticles2D.new()
+	spells.add_child(particles)
+	particles.global_position = rock_position
+	particles.texture = DUST
+
+	particles.amount = 10
+	particles.lifetime = 0.5
+	particles.one_shot = true
+	particles.explosiveness = 1.0
+	particles.emitting = true
+
+	particles.emission_shape = CPUParticles2D.EMISSION_SHAPE_SPHERE
+	particles.emission_sphere_radius = 5.0
+	particles.direction = Vector2(1, 0)
+	particles.spread = 180.0
+	particles.gravity = Vector2(0, 5.0)
+
+	particles.initial_velocity_min = 60.0
+	particles.initial_velocity_max = 100.0
+
+	particles.damping_min = 50.0
+	particles.damping_max = 80.0
+
+	particles.scale_amount_min = 0.5
+	particles.scale_amount_max = 1.5
+	
+
+	await get_tree().create_timer(particles.lifetime).timeout
+	if is_instance_valid(particles):
+		particles.queue_free()
+
+
 func _frostbolt_damage(enemy:Enemy) -> void:
 	var frostbolt_damage:float = _get_spell_attribute("frostbolt", "damage")
-	print("damage: ", frostbolt_damage)
 	var frostbolt_slow:float = _get_spell_attribute("frostbolt", "slow")
 	enemy.slow_time = frostbolt_slow
 	_damage_target(enemy, frostbolt_damage)
+	
+func _tornado_damage(enemy:Enemy) -> void:
+	var tornado_damage:float = _get_spell_attribute("tornado", "damage")
+	_damage_target(enemy, tornado_damage)
 
 
 func _fire_at_moving_target(target:Enemy) -> void:

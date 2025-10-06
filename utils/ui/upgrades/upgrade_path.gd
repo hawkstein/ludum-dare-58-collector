@@ -60,7 +60,7 @@ func create_frostbolt() -> SpellEntry:
 	
 	# Cost: [fire/water/earth/air] crystals.
 	frostbolt_entry.add_attribute("rate", _create_values(6.0, 4, [0,2,1,0], 0.8))
-	frostbolt_entry.add_attribute("damage", _create_values(10.0, 4, [0,2,0,1], 2))
+	frostbolt_entry.add_attribute("damage", _create_values(20.0, 4, [0,2,0,1], 2))
 	frostbolt_entry.add_attribute("slow", _create_values(2.0, 4, [0,2,0,0], 1.5))
 	#frostbolt_entry.print_attributes()
 	
@@ -71,8 +71,8 @@ func create_rockblast() -> SpellEntry:
 	var rockblast_entry = SpellEntry.new("Rockblast")
 	rockblast_entry.unlock_cost = Array([0,0,2,0], TYPE_INT, "", null)
 	
-	rockblast_entry.add_attribute("rate", _create_values(10.0, 4, [1,0,2,0], 0.75))
-	rockblast_entry.add_attribute("damage", _create_values(10.0, 4, [0,1,2,0], 2))
+	rockblast_entry.add_attribute("rate", _create_values(8.0, 4, [1,0,2,0], 0.75))
+	rockblast_entry.add_attribute("damage", _create_values(70.0, 4, [0,1,2,0], 2.5))
 	rockblast_entry.add_attribute("area", _create_values(20, 4, [0,0,2,0], 1.5))
 	#rockblast_entry.print_attributes()
 	
@@ -83,9 +83,9 @@ func create_tornado() -> SpellEntry:
 	var tornado_entry = SpellEntry.new("Tornado")
 	tornado_entry.unlock_cost = Array([0,0,0,2], TYPE_INT, "", null)
 	
-	tornado_entry.add_attribute("rate", _create_values(10.0, 4, [0,1,0,2], 0.75))
-	tornado_entry.add_attribute("damage", _create_values(10.0, 4, [1,0,0,2], 2))
-	tornado_entry.add_attribute("duration", _create_values(4, 4, [0,0,0,2], 3))
+	tornado_entry.add_attribute("rate", _create_values(2.1, 3, [0,1,0,2], 0.75))
+	tornado_entry.add_attribute("damage", _create_values(25.0, 5, [1,0,0,2], 2))
+	tornado_entry.add_attribute("duration", _create_values(1, 4, [0,0,0,2], 1.5))
 	#tornado_entry.print_attributes()
 	
 	return tornado_entry
