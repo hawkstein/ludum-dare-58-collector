@@ -1,5 +1,5 @@
 class_name Enemy
-extends Node2D
+extends Area2D
 
 signal attacked_tower(attack_strength:float)
 
@@ -8,10 +8,13 @@ signal attacked_tower(attack_strength:float)
 
 
 var tower_position: Vector2 = Vector2(310, 170) # Hardcoded tower position
-var speed: float = 50.0
+var speed: float = 30.0
 var target_distance:float = 30.0
 var is_moving: bool = true
 var is_attacking: bool = false
+
+var slow_time: float = 0.0
+var previous_slow_time: float = 0.0
 
 var max_health:float = 80.0
 var health:float = 80.0:
@@ -24,6 +27,7 @@ var health:float = 80.0:
 func _ready() -> void:
 	var health_scale = health / max_health
 	health_color_rect.scale.x = health_scale
+	add_to_group("enemies")
 
 func _process(delta) -> void:
 	if not is_moving:
@@ -31,6 +35,12 @@ func _process(delta) -> void:
 	
 	var direction = (tower_position - global_position).normalized()
 	var distance_to_tower = global_position.distance_to(tower_position)
+	var current_speed = speed
+	
+	if slow_time > 0:
+		current_speed = speed / 2
+		previous_slow_time = slow_time
+		slow_time = max(0, slow_time - delta)
 	
 	if distance_to_tower < target_distance:
 		is_moving = false
@@ -38,7 +48,18 @@ func _process(delta) -> void:
 		attack_timer.timeout.connect(_on_attack_timeout)
 		attack_timer.start()
 	else:
-		global_position += direction * speed * delta
+		
+		global_position += direction * current_speed * delta
+	
+	if not is_equal_approx(slow_time, previous_slow_time):
+		_check_tint()
+
+
+func _check_tint() -> void:
+	if slow_time > 0:
+		modulate = Color(0.6, 0.7, 1.0, 1.0)
+	else:
+		modulate = Color.WHITE
 
 
 func _on_attack_timeout() -> void:

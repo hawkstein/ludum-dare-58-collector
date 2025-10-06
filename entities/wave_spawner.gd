@@ -28,7 +28,7 @@ func spawn_wave() -> void:
 	wave += 1
 	waves_label.text = "Wave {0} of {1}".format([wave, max_waves])
 	var wave_health = 70.0 + (wave * wave * 5.0)
-	print("wave health ", wave_health)
+	#print("wave health ", wave_health)
 	for i in range(enemy_spawns):
 		spawn_enemy(ENEMY, get_random_position(), wave_health)
 	enemy_spawns += 2

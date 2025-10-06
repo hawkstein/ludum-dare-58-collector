@@ -1,6 +1,8 @@
 extends Node2D
 
 const FIREBALL = preload("uid://6a3l6orrerda")
+const FROSTBOLT = preload("uid://yslthdu0xon2")
+
 const MANA = preload("uid://vrd8l0abflp6")
 
 @onready var pause_window: Control = %PauseWindow
@@ -102,10 +104,40 @@ func _on_reset_button_pressed() -> void:
 
 func _on_tower_cast_spell(spell: String) -> void:
 	print("casting ", spell, "...")
-	if spell == "fireball":
-		var target = _pick_nearest_target()
-		if target:
-			_fire_at_moving_target(target)
+	var target
+	match spell:
+		"fireball":
+			target = _pick_nearest_target()
+			if target:
+				_fire_at_moving_target(target)
+		"frostbolt":
+			target = _pick_random_target()
+			if target:
+				_fire_frostbolt_at(target)
+			pass
+		"rockblast":
+			target = _pick_random_target()
+			pass
+		"tornado":
+			target = _pick_random_target()
+			pass
+
+
+func _fire_frostbolt_at(target:Enemy) -> void:
+	var frostbolt_spell:Frostbolt = FROSTBOLT.instantiate()
+	var cast_position = tower.get_cast_global_position()
+	frostbolt_spell.global_position = cast_position
+	spells.add_child(frostbolt_spell)
+	frostbolt_spell.aim_at_target(target.global_position)
+	frostbolt_spell.hit_enemy.connect(_frostbolt_damage, ConnectFlags.CONNECT_ONE_SHOT)
+
+
+func _frostbolt_damage(enemy:Enemy) -> void:
+	var frostbolt_damage:float = _get_spell_attribute("frostbolt", "damage")
+	print("damage: ", frostbolt_damage)
+	var frostbolt_slow:float = _get_spell_attribute("frostbolt", "slow")
+	enemy.slow_time = frostbolt_slow
+	_damage_target(enemy, frostbolt_damage)
 
 
 func _fire_at_moving_target(target:Enemy) -> void:
@@ -146,6 +178,12 @@ func _pick_nearest_target() -> Enemy:
 				nearest_target = child
 	return nearest_target
 
+
+func _pick_random_target() -> Enemy:
+	var potential_targets = enemies.get_children()
+	if potential_targets.size() <= 0:
+		return null
+	return potential_targets.pick_random()
 
 func _damage_target(target:Enemy, amount:float) -> void:
 	target.take_damage(amount)

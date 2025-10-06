@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://yslthdu0xon2"]
+
+[ext_resource type="Texture2D" uid="uid://bc1bglpqf73wx" path="res://entities/spells/frostbolt/frostbolt.png" id="1_ebulf"]
+[ext_resource type="Script" uid="uid://ba83g4n8035p2" path="res://entities/spells/frostbolt/frostbolt.gd" id="1_s3gcs"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ebulf"]
+radius = 5.0
+
+[node name="Frostbolt" type="Area2D"]
+script = ExtResource("1_s3gcs")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.5707964
+texture = ExtResource("1_ebulf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 0)
+shape = SubResource("CircleShape2D_ebulf")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

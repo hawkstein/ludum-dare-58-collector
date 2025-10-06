@@ -1,5 +1,5 @@
 class_name Tower
-extends Area2D
+extends Node2D
 
 signal tower_destroyed
 signal cast_spell(spell:String)
