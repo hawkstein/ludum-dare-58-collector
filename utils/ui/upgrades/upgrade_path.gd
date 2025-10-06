@@ -12,9 +12,9 @@ func create_fireball() -> SpellEntry:
 	var fireball_entry = SpellEntry.new("Fireball")
 	fireball_entry.is_unlocked = true
 	
-	var rate_values = _create_values(3.0, 4, [2,0,0,1], 0.7)
+	var rate_values = _create_values(2.5, 4, [2,0,0,1], 0.7)
 	fireball_entry.add_attribute("rate", rate_values)
-	var damage_values = _create_values(40, 4, [2,0,1,0], 2)
+	var damage_values = _create_values(50, 4, [2,0,1,0], 2)
 	fireball_entry.add_attribute("damage", damage_values)
 	var burn_values = _create_values(3.0, 4, [2,0,0,0], 4)
 	fireball_entry.add_attribute("burn", burn_values)

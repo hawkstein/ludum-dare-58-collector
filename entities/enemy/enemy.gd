@@ -12,13 +12,18 @@ var speed: float = 50.0
 var target_distance:float = 30.0
 var is_moving: bool = true
 var is_attacking: bool = false
-var max_health:float = 100.0
+
+var max_health:float = 80.0
 var health:float = 80.0:
 	set(p_health):
 		health = p_health
 		var health_scale = health / max_health
-		health_color_rect.scale.x = health_scale
+		if is_instance_valid(health_color_rect):
+			health_color_rect.scale.x = health_scale
 
+func _ready() -> void:
+	var health_scale = health / max_health
+	health_color_rect.scale.x = health_scale
 
 func _process(delta) -> void:
 	if not is_moving:

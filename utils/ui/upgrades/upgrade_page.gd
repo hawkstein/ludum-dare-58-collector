@@ -9,6 +9,8 @@ extends Control
 	collector_v_box,
 	tower_v_box,
 ]
+@onready var crystals_label: Label = %CrystalsLabel
+
 
 var progress: ProgressData = DataStore.get_model("Progress")
 
@@ -91,7 +93,6 @@ func _update_button_and_label(spell:StringName, key:String, upgrade_button:Butto
 
 
 func _purchase_spell_upgrade(spell:StringName, attribute:String, upgrade_button:Button, cost_label:Label) -> void:
-	# TODO: check if player can afford purchase
 	var spell_entry: SpellEntry = UpgradePath.get(spell)
 	var next_idx = progress.spells.get(spell)[attribute]
 	var cost = spell_entry.attributes.get(attribute)[next_idx].cost
@@ -126,6 +127,17 @@ func _pay_cost(cost:Array) -> void:
 	
 	progress.update_by(-cost[3], "air_crystals")
 	progress.update_by(cost[3], "spent_air_crystals")
+	
+	update_crystals_label()
+
+
+func update_crystals_label() -> void:
+	crystals_label.text = "F:{0} - W:{1} - E:{2} - A:{3}".format([
+		progress.fire_crystals,
+		progress.water_crystals,
+		progress.earth_crystals,
+		progress.air_crystals
+	])
 
 
 func _create_locked_spell_tab(spell_entry:SpellEntry) -> void:

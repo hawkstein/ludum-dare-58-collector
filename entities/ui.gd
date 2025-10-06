@@ -26,3 +26,4 @@ func show_loop(loop_count:int) -> void:
 func show_upgrade() -> void:
 	loop_page.hide()
 	upgrade_page.show()
+	upgrade_page.update_crystals_label()

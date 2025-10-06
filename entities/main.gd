@@ -155,7 +155,7 @@ func _damage_target(target:Enemy, amount:float) -> void:
 
 
 func _spawn_mana(mana_position:Vector2) -> void:
-	var mana_amount := 3
+	var mana_amount := 5
 	var angle_step = TAU / mana_amount
 	for i in range(mana_amount):
 		var angle = (angle_step * i) + randf_range(-0.3, 0.3)
