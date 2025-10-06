@@ -25,7 +25,6 @@ script = ExtResource("1_h2yge")
 [node name="UI" type="CanvasLayer" parent="."]
 process_mode = 2
 layer = 2
-visible = false
 script = ExtResource("2_re4i5")
 
 [node name="Layout" type="Control" parent="UI"]
@@ -62,7 +61,6 @@ theme_override_constants/margin_bottom = 20
 
 [node name="LoopPage" type="Control" parent="UI/Layout/MarginContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/Layout/MarginContainer/LoopPage"]
@@ -89,14 +87,22 @@ size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 44
 text = "Loop: 0"
 
+[node name="HighestLabel" type="Label" parent="UI/Layout/MarginContainer/LoopPage/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Highest wave reached: 1"
+
 [node name="Label" type="Label" parent="UI/Layout/MarginContainer/LoopPage/VBoxContainer"]
 custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/line_spacing = -4
-text = "Your tower was destroyed,
-now travel back in time with a better spell collection in your grimoire.
-"
+text = "Your tower was destroyed.
+Upgrade your spells
+and travel back in time
+to get closer to surviving"
+horizontal_alignment = 1
 autowrap_mode = 2
 
 [node name="Spacer" type="Control" parent="UI/Layout/MarginContainer/LoopPage/VBoxContainer"]
@@ -110,6 +116,7 @@ text = "Purchase upgrades"
 
 [node name="UpgradePage" type="Control" parent="UI/Layout/MarginContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 script = ExtResource("5_r5g43")
 

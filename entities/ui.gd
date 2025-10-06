@@ -4,6 +4,9 @@ extends CanvasLayer
 @onready var loop_page = %LoopPage
 @onready var upgrade_page = %UpgradePage
 @onready var loop_count_label = %LoopCount
+@onready var highest_label: Label = %HighestLabel
+
+var progress:ProgressData = DataStore.get_model("Progress")
 
 func _ready() -> void:
 	loop_page.hide()
@@ -15,6 +18,7 @@ func show_loop(loop_count:int) -> void:
 	loop_page.show()
 	var previous_count = max(0, loop_count - 1)
 	loop_count_label.text = "Loop: {0} + 1".format([previous_count])
+	highest_label.text = "Highest wave reached: {0}".format([progress.max_wave])
 	var t = Timer.new()
 	add_child(t)
 	t.start(2)

@@ -11,6 +11,8 @@ signal waves_completed
 @onready var spawn_timer: Timer = $SpawnTimer
 @onready var waves_label: Label = %WavesLabel
 
+var progress:ProgressData = DataStore.get_model("Progress")
+
 var enemy_spawns:int
 var wave:int
 
@@ -28,6 +30,11 @@ func reset() -> void:
 
 func spawn_wave() -> void:
 	wave += 1
+	
+	var highest_wave_so_far = progress.max_wave
+	if wave > highest_wave_so_far:
+		progress.update(wave, "max_wave")
+		
 	if wave <= max_waves:
 		waves_label.text = "Wave {0} of {1}".format([wave, max_waves])
 		var wave_health = 70.0 + (wave * wave * 5.0)
